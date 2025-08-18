@@ -26,7 +26,7 @@ def problem_two(n):
     """
     a = 1
     b = 2
-    counter = a + b
+    counter = b
     while a + b <= n:
         if (a + b) % 2 == 0:
             counter += a + b

@@ -2,8 +2,6 @@ import numpy as np
 import math
 from utils import prime_factors_dict 
 
-### EULER PROBLEMS BEGIN HERE ###
-
 
 def problem_eleven():
     """
@@ -46,7 +44,7 @@ def problem_eleven():
 
     return largest_product
 
-# print("The answer to problem eleven is: ", problem_eleven())
+print("The answer to problem eleven is: ", problem_eleven())
 
 
 
@@ -84,7 +82,7 @@ def problem_twelve(n):
         counter += 1
         
 
-# print("The answer to problem twelve is: ", problem_twelve(500))
+print("The answer to problem twelve is: ", problem_twelve(500))
 
 
 def problem_thirteen():
@@ -132,7 +130,7 @@ def problem_thirteen():
     
     return first_10
     
-# print("The answer to problem thirteen is: ", problem_thirteen())
+print("The answer to problem thirteen is: ", problem_thirteen())
 
 
 
@@ -202,7 +200,7 @@ def problem_fourteen():
     return largest
         
         
-# print("The answer to problem fourteen is: ", problem_fourteen())
+print("The answer to problem fourteen is: ", problem_fourteen())
 
 
 def problem_fifteen(n):
@@ -214,7 +212,7 @@ def problem_fifteen(n):
     
     return math.comb(2*n, n)
     
-# print("The answer to problem fifteen is: ", problem_fifteen(20))
+print("The answer to problem fifteen is: ", problem_fifteen(20))
 
 
 def problem_sixteen(n):
@@ -225,7 +223,7 @@ def problem_sixteen(n):
     return sum([int(num) for num in str(2 ** n)])    
 
     
-# print("The answer to problem sixteen is: ", problem_sixteen(1000))
+print("The answer to problem sixteen is: ", problem_sixteen(1000))
 
 
 
@@ -265,7 +263,7 @@ def problem_seventeen():
     
     return letter_counter
     
-# print("The answer to problem seventeen is: ", problem_seventeen())
+print("The answer to problem seventeen is: ", problem_seventeen())
 
 
 def problem_eighteen():
@@ -296,4 +294,58 @@ def problem_eighteen():
     # The top entry will now contain the largest possible path all the way to the bottom. Return the top entry
     return sum(triangle_matrix[0][0])
  
-# print("The answer to problem eighteen is: ", problem_eighteen())
+print("The answer to problem eighteen is: ", problem_eighteen())
+
+
+
+def problem_nineteen():
+    """
+    Return how many Sundays fell on the first of the month between 1 Jan 1901 and Dec 31 2000
+    """
+    def is_leap(year: int):
+        """
+        Return True if 'year' is a leap year. Return 
+        """
+        if type(year) != int:
+            raise ValueError("Year must be an integer")
+        
+        if year % 400 == 0:
+            return True
+        elif year % 100 == 0:
+            return False
+        elif year % 4 == 0:
+            return True
+        else:
+            return False
+    
+    days_per_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    
+    # 1 Jan 1901 begins on a Tuesday (2)
+    day = 2
+    sunday_counter = 0
+    for year in range(1901, 2000 + 1):
+        for days in days_per_month:
+            if is_leap(year) and days == 28: # Implement leap-year if necessary
+                days = 29
+            day = (days + day) % 7
+            if day == 0:
+                sunday_counter += 1
+                
+    # Note, this calculation actually includes 1 January 2001, but since this fell on a Monday this does not impact the result
+    
+    return sunday_counter
+    
+    
+print("The answer to problem nineteen is: ", problem_nineteen())
+
+
+
+
+def problem_twenty(n):
+    """
+    Return is the digit sum of n!
+    """
+    return sum(map(int,list(str(math.factorial(n)))))
+    
+    
+print("The answer to problem twenty is: ", problem_twenty(100))
