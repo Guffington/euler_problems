@@ -1,6 +1,6 @@
 # Solutions to the Euler Problems
 
-Welcome to my collection of solutions to the first 20 Project Euler problems. This repository is part of my programming portfolio and showcases my approach to solving algorithmic and mathematical challenges in Python.
+Welcome to my collection of solutions to the first 30 Project Euler problems. This repository is part of my programming portfolio and showcases my approach to solving algorithmic and mathematical challenges in Python.
 
 ## About Project Euler
 
@@ -70,7 +70,7 @@ Through these problems, I aimed to:
 I intend to continue solving additional Project Euler problems and expand this repository.  
 Future updates will include:
 
-- Solutions to problems 21 and beyond.
+- Solutions to problems 31 and beyond.
 
 - Optimizations and refactorings of existing solutions.
 
