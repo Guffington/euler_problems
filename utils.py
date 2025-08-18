@@ -96,3 +96,19 @@ def prime_factors_dict(n):
             factors_dict[factor] = 1
     
     return factors_dict
+
+def aliquot_sum(n):
+    """
+    Calculate the aliquot sum of n (the sum of all proper divisors)
+    """
+    prime_factors = prime_factors_dict(n)
+
+    # Use geometric series formula to calculate the sum of the divisors involving each prime factor and its multiplicity
+    sum_of_divisors = 1
+    for factor, multiplicity in prime_factors.items():
+        quotient = (factor ** (multiplicity + 1) - 1) // (factor - 1)
+        sum_of_divisors *= quotient
+    # Remove one copy of n to get the sum of the *proper* divisors
+    sum_of_divisors -= n
+    
+    return sum_of_divisors
