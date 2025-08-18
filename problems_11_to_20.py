@@ -1,36 +1,6 @@
 import numpy as np
-from problems_1_to_10 import prime_factors_list
-
-### USEFUL FUNCTIONS ###
-
-def find_all_factors(n):
-    """
-    Find all factors of n by brute force
-    """
-    factors = [1, n]
-    
-    for i in range(2, int(n/2)):
-        if n % i == 0:
-            factors.append(i)
-            factors.append(n // i)
-            
-    return sorted(list(set(factors)))
-
-def prime_factors_dict(n):
-    """
-    Convert prime factors list into a dictionary showing the multiplicity of each distinct factor
-    """
-    factors_dict = {}
-    prime_factors = prime_factors_list(n)
-    
-    for factor in prime_factors:
-        if factor in factors_dict:
-            factors_dict[factor] += 1
-        else:
-            factors_dict[factor] = 1
-    
-    return factors_dict
-
+import math
+from utils import prime_factors_dict 
 
 ### EULER PROBLEMS BEGIN HERE ###
 
@@ -133,7 +103,7 @@ def problem_thirteen():
     # Initialize list to contain the current summation
     summation = ['0'] * 50
     
-    for number in [number for number in large_numbers[:i]]:
+    for number in large_numbers:
         
         # Prepend zeros to each number so that the two numbers have the same number of digits
         number = ['0'] * (len(summation) - len(number)) + number
@@ -235,7 +205,95 @@ def problem_fourteen():
 # print("The answer to problem fourteen is: ", problem_fourteen())
 
 
-def problem_fifteen():
-    1
+def problem_fifteen(n):
+    """
+    How many routes from the top left to the top right in a n x n grid.
+    """
     
-print("The answer to problem fifteen is: ", problem_fifteen())
+    # To get to the bottom right one needs to go 'right' n times and 'down' n times. The total number of combinations of these are (2n!) /( n! * n!)
+    
+    return math.comb(2*n, n)
+    
+# print("The answer to problem fifteen is: ", problem_fifteen(20))
+
+
+def problem_sixteen(n):
+    """
+    Return the sum of the digits of 2 ** n in decimal
+    """
+    
+    return sum([int(num) for num in str(2 ** n)])    
+
+    
+# print("The answer to problem sixteen is: ", problem_sixteen(1000))
+
+
+
+def problem_seventeen():
+    """
+    Return the number of letters used to write out all numbers from one to one thousand
+    """
+    
+    # Write down the building blocks of each number
+    ones = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
+    teens = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
+    
+    tens = ['twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
+    
+    # From 20 to 999 the numbers can be assembled algorithmically
+    up_to_ninety_nine = []
+    for ten in tens:
+        up_to_ninety_nine.append(ten)
+        for one in ones:
+            up_to_ninety_nine.append(ten + one)
+    
+    up_to_ninety_nine = ones + teens + up_to_ninety_nine
+    
+    hundreds = []
+    for one in ones:
+        hundreds.append(one + "hundred")
+        for number in up_to_ninety_nine:
+            hundreds.append(one + "hundredand" + number)
+    
+    # Full list of all numbers written in words (no spaces or hyphens)
+    full_list = up_to_ninety_nine + hundreds + ['onethousand']
+    
+    # Count the letters in each word
+    letter_counter = 0
+    for number in full_list:
+        letter_counter += len(number)
+    
+    return letter_counter
+    
+# print("The answer to problem seventeen is: ", problem_seventeen())
+
+
+def problem_eighteen():
+    """
+    Find the route through the triangle with the largest sum
+    """
+    triangle_matrix = []
+    
+    def make_list(item):
+        """
+        Return 'item' converted to an integer and placed into a list
+        """
+        return [int(item)]
+    
+    # Import the triangle from file
+    with open("problem_eighteen_triangle.txt") as t:
+        for line in t:
+            triangle_matrix.append(list(map(make_list, line.split()))) # Each number in the triangle is made into a list, so the paths can be built up by appending the largest child
+    
+    # Begin from the bottom, and finish with the second row from the top
+    for level, row in enumerate(reversed(triangle_matrix[1:])):
+        for i in range(len(row) - 1):
+            # Compute the largest sum of the paths of the two decedenents for each element in each row
+            largest = max(row[i], row[i + 1], key = sum)
+            # Append the largest path to its ancestor
+            triangle_matrix[-(level + 2)][i].extend(largest)
+                
+    # The top entry will now contain the largest possible path all the way to the bottom. Return the top entry
+    return sum(triangle_matrix[0][0])
+ 
+# print("The answer to problem eighteen is: ", problem_eighteen())
