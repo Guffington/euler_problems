@@ -16,9 +16,19 @@ The repository is organized as follows:
 
 - `problems_11_to_20.py`: Solutions to problems 11 through 20.
 
+- `problems_21_to_30.py`: Solutions to problems 21 through 30.
+
+- `utils.py`: Utility functions used in multiple solutions
+
+--
+
 - `problem_eleven_number.txt`: Data file used in problem 11.
 
 - `problem_thirteen_numbers.txt`: Data file used in problem 13.
+
+- `problem_eighteen_triangle.txt`: Data file used in problem 18.
+
+- `problem_twentytwo_names.txt`: Data file used in problem 22.
 
 ## Getting Started
 
@@ -41,7 +51,9 @@ E.g.:
 python3 problems_1_to_10.py
 ```
 
-This will print out the solutions to problems 1 through 10.
+This will print out the solutions to problems 1 through 10 in order.  
+Each solution is written within its own named function.  
+Comment out the function call (below each function) to stop computing a particular solution.
 
 ## Learning Objectives
 
