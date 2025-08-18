@@ -50,6 +50,21 @@ def prime_factors_list(n):
     return factors
 
 
+def is_prime(n):
+    """
+    Return True if n is prime, False i fit is not prime
+    """
+    
+    if n < 2:
+        return False
+    
+    if len(prime_factors_list(n)) == 1:
+        return True
+    else:
+        return False
+
+
+
 def primes_up_to_n(n):
     """
     Return the first n primes
