@@ -13,6 +13,16 @@ Project Euler is a platform offering a series of challenging mathematical and co
 
 [Project Euler Archives](https://projecteuler.net/archives)
 
+## Learning Objectives
+
+Through these problems, I aimed to:
+
+- **Python proficiency:** Continually improve coding skills in Python.
+
+- **Algorithmic thinking:** Develop efficient algorithms for mathematical challenges.
+
+- **Problem solving:** Improve problem-solving strategies and debugging skills.
+
 ## Repository Structure
 
 The repository is organized as follows:
@@ -54,22 +64,21 @@ This will print out the solutions to problems 1 through 10 in order:
 ```text
 The answer to problem one is:  233168
 The answer to problem two is:  4613732
-....
+...
 The answer to problem ten is:  142913828922
 ```
 
-Each solution is written within its own named function.  
+Each solution is written within its own named function.
+```python
+def problem_one(n):
+    """
+    Returns the sum of all multiples of 3 or 5 below n.
+    """
+...  
+
+print("The answer to problem one is: ", problem_one(1000))
+```
 Comment out the function call (below each function) to stop computing a particular solution.
-
-## Learning Objectives
-
-Through these problems, I aimed to:
-
-- Enhance proficiency in Python.
-
-- Develop efficient algorithms for mathematical challenges.
-
-- Improve problem-solving strategies and debugging skills.
 
 ## Future Plans
 
