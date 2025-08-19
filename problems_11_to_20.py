@@ -1,8 +1,8 @@
 import numpy as np
 import math
-from utils import prime_factors_dict 
+from utils import timer, prime_factors_dict 
 
-
+@timer
 def problem_eleven():
     """
     Return the largest product of four adjacent numbers in any direction from the 20x20 matrix
@@ -44,10 +44,11 @@ def problem_eleven():
 
     return largest_product
 
-print("The answer to problem eleven is: ", problem_eleven())
+answer, time = problem_eleven()
+print(f"The answer to problem eleven is: {answer}    (Run in {time:.5f} s)")
 
 
-
+@timer
 def problem_twelve(n):
     """
     Calculate the first triangle number to have at least n divisors
@@ -82,9 +83,11 @@ def problem_twelve(n):
         counter += 1
         
 
-print("The answer to problem twelve is: ", problem_twelve(500))
+answer, time = problem_twelve(500)
+print(f"The answer to problem twelve is: {answer}    (Run in {time:.5f} s)")
 
 
+@timer
 def problem_thirteen():
     """
     Return the first 10-digits of a sum of 100 different 50-digit numbers 
@@ -130,11 +133,13 @@ def problem_thirteen():
     
     return first_10
     
-print("The answer to problem thirteen is: ", problem_thirteen())
+    
+answer, time = problem_thirteen()
+print(f"The answer to problem thirteen is: {answer}    (Run in {time:.5f} s)")
 
 
 
-
+@timer
 def problem_fourteen():
     """
     Find the longest collatz sequence beginning with a number less than one million
@@ -200,9 +205,10 @@ def problem_fourteen():
     return largest
         
         
-print("The answer to problem fourteen is: ", problem_fourteen())
+answer, time = problem_fourteen()
+print(f"The answer to problem fourteen is: {answer}    (Run in {time:.5f} s)")
 
-
+@timer
 def problem_fifteen(n):
     """
     How many routes from the top left to the top right in a n x n grid.
@@ -212,9 +218,12 @@ def problem_fifteen(n):
     
     return math.comb(2*n, n)
     
-print("The answer to problem fifteen is: ", problem_fifteen(20))
+
+answer, time = problem_fifteen(20)
+print(f"The answer to problem fifteen is: {answer}    (Run in {time:.5f} s)")
 
 
+@timer
 def problem_sixteen(n):
     """
     Return the sum of the digits of 2 ** n in decimal
@@ -222,11 +231,12 @@ def problem_sixteen(n):
     
     return sum([int(num) for num in str(2 ** n)])    
 
-    
-print("The answer to problem sixteen is: ", problem_sixteen(1000))
+
+answer, time = problem_sixteen(1000)
+print(f"The answer to problem sixteen is: {answer}    (Run in {time:.5f} s)")
 
 
-
+@timer
 def problem_seventeen():
     """
     Return the number of letters used to write out all numbers from one to one thousand
@@ -263,9 +273,11 @@ def problem_seventeen():
     
     return letter_counter
     
-print("The answer to problem seventeen is: ", problem_seventeen())
+answer, time = problem_seventeen()
+print(f"The answer to problem seventeen is: {answer}    (Run in {time:.5f} s)")
 
 
+@timer
 def problem_eighteen():
     """
     Find the route through the triangle with the largest sum
@@ -294,10 +306,13 @@ def problem_eighteen():
     # The top entry will now contain the largest possible path all the way to the bottom. Return the top entry
     return sum(triangle_matrix[0][0])
  
-print("The answer to problem eighteen is: ", problem_eighteen())
+ 
+answer, time = problem_eighteen()
+print(f"The answer to problem eighteen is: {answer}    (Run in {time:.5f} s)")
 
 
 
+@timer
 def problem_nineteen():
     """
     Return how many Sundays fell on the first of the month between 1 Jan 1901 and Dec 31 2000
@@ -336,11 +351,12 @@ def problem_nineteen():
     return sunday_counter
     
     
-print("The answer to problem nineteen is: ", problem_nineteen())
+answer, time = problem_nineteen()
+print(f"The answer to problem nineteen is: {answer}    (Run in {time:.5f} s)")
 
 
 
-
+@timer
 def problem_twenty(n):
     """
     Return is the digit sum of n!
@@ -348,4 +364,5 @@ def problem_twenty(n):
     return sum(map(int,list(str(math.factorial(n)))))
     
     
-print("The answer to problem twenty is: ", problem_twenty(100))
+answer, time = problem_twenty(100)
+print(f"The answer to problem twenty is: {answer}    (Run in {time:.5f} s)")

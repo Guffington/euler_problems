@@ -63,10 +63,10 @@ python3 problems_1_to_10.py
 This will print out the solutions to problems 1 through 10 in order:
 
 ```text
-The answer to problem one is:  233168
-The answer to problem two is:  4613732
+The answer to problem one is: 233168    (Run in 0.00016 s)
+The answer to problem two is: 4613732    (Run in 0.00001 s)
 ...
-The answer to problem ten is:  142913828922
+The answer to problem ten is: 142913828922    (Run in 0.32453 s)
 ```
 
 Each solution is written within its own named function.
@@ -78,7 +78,8 @@ def problem_one(n):
     """
 ...
 
-print("The answer to problem one is: ", problem_one(1000))
+answer, time = problem_one(1000)
+print(f"The answer to problem one is: {answer}    (Run in {time:.5f} s)")
 ```
 
 Comment out the function call (below each function) to stop computing a particular solution.
@@ -91,5 +92,3 @@ Future updates will include:
 - Solutions to problems 31 and beyond.
 
 - Optimizations and refactorings of existing solutions.
-
-- Benchmarking and performance analyses of each solution
