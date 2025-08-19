@@ -1,6 +1,7 @@
 import math
-from utils import prime_factors_list, primes_up_to_n, sieve_primes
+from utils import timer, prime_factors_list, primes_up_to_n, sieve_primes
     
+@timer
 def problem_one(n):
     """
     Returns the sum of all multiples of 3 or 5 below n.
@@ -16,10 +17,11 @@ def problem_one(n):
             counter += i
     return counter
 
-print("The answer to problem one is: ", problem_one(1000))
+answer, time = problem_one(1000)
+print(f"The answer to problem one is: {answer}    (Run in {time:.5f} s)")
 
 
-
+@timer
 def problem_two(n):
     """
     Returns the sum of all even Fibonacci numbers below n.
@@ -33,10 +35,11 @@ def problem_two(n):
         a, b = b, a + b #Update the Fibonacci sequence
     return counter
 
-print("The answer to problem two is: ", problem_two(4 * 10**6))
+answer, time = problem_two(4 * 10 ** 6)
+print(f"The answer to problem two is: {answer}    (Run in {time:.5f} s)")
 
 
-
+@timer
 def problem_three(n):
     """
     Returns the largest prime factor of n.
@@ -45,10 +48,12 @@ def problem_three(n):
     
     return max(factors)
 
-print("The answer to problem three is: ", problem_three(600851475143))
+answer, time = problem_three(600851475143)
+print(f"The answer to problem three is: {answer}    (Run in {time:.5f} s)")
 
 
 
+@timer
 def problem_four(n):
     """
     Return the largest palendromic number that is the product of two n-digit numbers 
@@ -65,9 +70,12 @@ def problem_four(n):
                 if i % factor == 0 and len(str(i // factor)) == n:
                     return i
         
-print("The answer to problem four is: ", problem_four(3))
+answer, time = problem_four(3)
+print(f"The answer to problem four is: {answer}    (Run in {time:.5f} s)")
 
 
+
+@timer
 def problem_five(n):
     """
     Return the integer which is the smallest multiple of the integers from 1 to n
@@ -95,11 +103,12 @@ def problem_five(n):
     
     return total
         
-    
-print("The answer to problem five is: ", problem_five(19))
+
+answer, time = problem_five(19)
+print(f"The answer to problem five is: {answer}    (Run in {time:.5f} s)")
 
 
-
+@timer
 def problem_six(n):
     """
     Calculate the difference between the square of the sum of the first n integers, and the sum of the squares of the first n integers
@@ -114,10 +123,11 @@ def problem_six(n):
     return counter
     
     
-print("The answer to problem six is: ", problem_six(100))
+answer, time = problem_six(100)
+print(f"The answer to problem six is: {answer}    (Run in {time:.5f} s)")
 
 
-
+@timer
 def problem_seven(n):
     """
     Return the nth prime number
@@ -125,9 +135,12 @@ def problem_seven(n):
         
     return primes_up_to_n(n)[n-1]
     
-print("The answer to problem seven is: ", problem_seven(10001))
+answer, time = problem_seven(10001)
+print(f"The answer to problem seven is: {answer}    (Run in {time:.5f} s)")
 
 
+
+@timer
 def problem_eight(n):
     """
     Find the largest product of n successive digits in the 1000-digit number given
@@ -153,11 +166,12 @@ def problem_eight(n):
             largest_product = total #Update 'largest_product' if a new largest product is found
             
     return largest_product
-    
-print("The answer to problem eight is: ", problem_eight(13))
+
+answer, time = problem_eight(13)
+print(f"The answer to problem eight is: {answer}    (Run in {time:.5f} s)")
 
 
-
+@timer
 def problem_nine():
     """
     Return the product a * b * c, where a < b < c is the unqiue Pythagorean triple which sum to 1000.
@@ -184,11 +198,13 @@ def problem_nine():
             return a * b * c
         
     return "Not found."
-    
-print("The answer to problem nine is: ", problem_nine())
+
+answer, time = problem_nine()
+print(f"The answer to problem nine is: {answer}    (Run in {time:.5f} s)")
 
 
 
+@timer
 def problem_ten(n):
     """
     Return the sum of all primes up to n
@@ -196,5 +212,5 @@ def problem_ten(n):
     
     return sum(sieve_primes(n))
 
-
-print("The answer to problem ten is: ", problem_ten(2 * 10 ** 6))
+answer, time = problem_ten(2 * 10 ** 6)
+print(f"The answer to problem ten is: {answer}    (Run in {time:.5f} s)")

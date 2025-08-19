@@ -1,5 +1,18 @@
 import numpy as np
 import math
+import time
+
+def timer(func):
+   """
+   Timer decorator function to calculate the runtime of a function
+   """ 
+   def wrapper(*args, **kwargs):
+       start = time.perf_counter()
+       result = func(*args, **kwargs)
+       end = time.perf_counter()
+       return result, end - start
+   
+   return wrapper
 
 def sieve_primes(bound):
     """
