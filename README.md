@@ -1,5 +1,10 @@
 # Solutions to the Euler Problems
 
+![Python](https://img.shields.io/badge/Python-3.x-blue)
+![Project Euler](https://img.shields.io/badge/Project%20Euler-30%20problems-orange)
+![Last Commit](https://img.shields.io/github/last-commit/Guffington/euler_problems)
+![License: MIT](https://img.shields.io/badge/License-MIT-green)
+
 Welcome to my collection of solutions to the first 30 Project Euler problems. This repository is part of my programming portfolio and showcases my approach to solving algorithmic and mathematical challenges in Python.
 
 ## About Project Euler
@@ -12,23 +17,17 @@ Project Euler is a platform offering a series of challenging mathematical and co
 
 The repository is organized as follows:
 
-- `problems_1_to_10.py`: Solutions to problems 1 through 10.
-
-- `problems_11_to_20.py`: Solutions to problems 11 through 20.
-
-- `problems_21_to_30.py`: Solutions to problems 21 through 30.
-
-- `utils.py`: Utility functions used in multiple solutions
-
---
-
-- `problem_eleven_number.txt`: Data file used in problem 11.
-
-- `problem_thirteen_numbers.txt`: Data file used in problem 13.
-
-- `problem_eighteen_triangle.txt`: Data file used in problem 18.
-
-- `problem_twentytwo_names.txt`: Data file used in problem 22.
+```text
+euler_problems/
+├── problems_1_to_10.py           # Solutions to problems 1–10
+├── problems_11_to_20.py          # Solutions to problems 11–20
+├── problems_21_to_30.py          # Solutions to problems 21–30
+├── utils.py                      # Shared helper functions
+├── problem_eleven_number.txt     # Input data for Problem 11
+├── problem_thirteen_numbers.txt  # Input data for Problem 13
+├── problem_eighteen_triangle.txt # Input data for Problem 18
+└── problem_twentytwo_names.txt   # Input data for Problem 22
+```
 
 ## Getting Started
 
@@ -51,7 +50,14 @@ E.g.:
 python3 problems_1_to_10.py
 ```
 
-This will print out the solutions to problems 1 through 10 in order.  
+This will print out the solutions to problems 1 through 10 in order:   
+```text
+The answer to problem one is:  233168
+The answer to problem two is:  4613732
+....
+The answer to problem ten is:  142913828922
+```
+
 Each solution is written within its own named function.  
 Comment out the function call (below each function) to stop computing a particular solution.
 
