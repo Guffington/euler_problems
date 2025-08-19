@@ -52,7 +52,7 @@ cd euler_problems
 
 #### Runs on Python 3!
 
-### Execute a solution:
+### Execute a solution set:
 
 E.g.:
 
@@ -60,7 +60,8 @@ E.g.:
 python3 problems_1_to_10.py
 ```
 
-This will print out the solutions to problems 1 through 10 in order:   
+This will print out the solutions to problems 1 through 10 in order:
+
 ```text
 The answer to problem one is:  233168
 The answer to problem two is:  4613732
@@ -69,15 +70,17 @@ The answer to problem ten is:  142913828922
 ```
 
 Each solution is written within its own named function.
+
 ```python
 def problem_one(n):
     """
     Returns the sum of all multiples of 3 or 5 below n.
     """
-...  
+...
 
 print("The answer to problem one is: ", problem_one(1000))
 ```
+
 Comment out the function call (below each function) to stop computing a particular solution.
 
 ## Future Plans

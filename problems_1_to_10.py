@@ -133,36 +133,19 @@ def problem_eight(n):
     Find the largest product of n successive digits in the 1000-digit number given
     """
     
-    # Load the big number, into 10 lists
-    big_number_dict = { 1: list(str(73167176531330624919225119674426574742355349194934)),
-    2: list(str(96983520312774506326239578318016984801869478851843)),
-    3: list(str(85861560789112949495459501737958331952853208805511)),
-    4: list(str(12540698747158523863050715693290963295227443043557)),
-    5: list(str(66896648950445244523161731856403098711121722383113)),
-    6: list(str(62229893423380308135336276614282806444486645238749)),
-    7: list(str(30358907296290491560440772390713810515859307960866)),
-    8: list(str(70172427121883998797908792274921901699720888093776)),
-    9: list(str(65727333001053367881220235421809751254540594752243)),
-    10: list(str(52584907711670556013604839586446706324415722155397)),
-    11: list(str(53697817977846174064955149290862569321978468622482)),
-    12: list(str(83972241375657056057490261407972968652414535100474)),
-    13: list(str(82166370484403199890008895243450658541227588666881)),
-    14: list(str(16427171479924442928230863465674813919123162824586)),
-    15: list(str(17866458359124566529476545682848912883142607690042)),
-    16: list(str(242190226710556263211111093705442175069416589604080)),
-    17: list(str(7198403850962455444362981230987879927244284909188)),
-    18: list(str(845801561660979191338754992005240636899125607176060)),
-    19: list(str(5886116467109405077541002256983155200055935729725)),
-    20: list(str(71636269561882670428252483600823257530420752963450)) }
-    
+    # Load the big number from file
+    with open("problem_eight_number.txt", 'r') as num:
+        number = num.read().split()
+        
     # Add the lists together, storing the number in one big list
     big_number = []
-    for _, number in big_number_dict.items():
-        big_number.extend(number)
+    for line in number:
+        for letter in line:
+            big_number.append(letter)
     
     # Search though the number to find the largest product of n successive digits
     largest_product = 0
-    for num in range(1000 - (n - 1)):
+    for num in range(1000 - (n-1)):
         total = 1
         for i in range(n): #Calculate the product of n sucessive numbers after digit 'num'
             total *= int(big_number[num + i]) 
