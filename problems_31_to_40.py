@@ -1,4 +1,4 @@
-print("Loading packages...", end = "")
+print("\rLoading packages...", end = "")
 from utils import timer, find_all_factors, sieve_primes
 from fractions import Fraction
 import math
@@ -175,4 +175,31 @@ def problem_thirtyfive(n):
     
     
 # answer, time = problem_thirtyfive(10 ** 6)
-# print(f"The answer to problem thirty-four is: {answer}    (Run in {time:.5f} s)")
+# print(f"The answer to problem thirty-five is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_thirtysix(n):
+    """
+    Return the sum of all numbers less than one million which are palindromic in both decimal and binary systems
+    """
+    palindromes = []
+    for i in range(n):
+        # Use the bin() function to calculate the binary version of 'i'; need to cut off the '0b' string
+        if str(i) == str(i)[::-1] and bin(i)[2:] == bin(i)[:1:-1]:
+            palindromes.append(i)
+
+    return len(palindromes)
+    
+# answer, time = problem_thirtysix(10 ** 6)
+# print(f"The answer to problem thirty-six is: {answer}    (Run in {time:.5f} s)")
+
+
+
+def problem_thirtyseven():
+    """
+    
+    """
+    
+print(problem_thirtyseven())
+# print(f"The answer to problem thirty-seven is: {answer}    (Run in {time:.5f} s)")
