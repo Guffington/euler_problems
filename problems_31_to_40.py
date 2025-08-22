@@ -1,5 +1,5 @@
 print("\rLoading packages...", end = "")
-from utils import timer, find_all_factors, sieve_primes
+from utils import timer, find_all_factors, sieve_primes, is_prime
 from fractions import Fraction
 import math
 print("\rAll packages loaded")
@@ -195,11 +195,52 @@ def problem_thirtysix(n):
 # print(f"The answer to problem thirty-six is: {answer}    (Run in {time:.5f} s)")
 
 
-
+@timer
 def problem_thirtyseven():
     """
-    
+    Find the sum of all eleven left/right truncatable primes
     """
+    # We can deduce the following facts:
+    # - Last digit must be 3, 5, 7
+    # - 4, 6, 8 cannot feature in the number
+    # - 2, 5 can only be the first digit of a number
     
-print(problem_thirtyseven())
-# print(f"The answer to problem thirty-seven is: {answer}    (Run in {time:.5f} s)")
+    last_digits = [3, 5, 7]
+    possible_digits = [1, 2, 3, 5, 7, 9]
+    
+    # First construct all two-digit left-truncatable numbers
+    left_truncatable = []
+    truncatable = set()
+    for last_digit in last_digits:
+        for first_digit in possible_digits:
+            number = int(str(first_digit) + str(last_digit))
+            if is_prime(number):
+                left_truncatable.append(number)
+                # If the first digit is prime then it is also right tuncatable
+                if first_digit in [2, 3, 5, 7]:
+                    truncatable.add(number)
+    
+    # From the two digit left-truncatable numbers, build up (mostly) all left truncatable numbers. This loop keeps adding numbers to the 'left_truncatable' list, and then builds off those until no more left-truncatable numbers exist
+    for number in left_truncatable:
+        # Don't build on any numbers beginning with a 2 or a 5 since they will obviously get excluded later
+        if str(number)[0] not in ["2", "5"]:
+            for digit in possible_digits:
+                new_number = int(str(digit) + str(number))
+                if is_prime(new_number) and new_number not in left_truncatable:
+                    left_truncatable.append(new_number)
+    
+    # Now check the right truncatability of each of the left-truncatable numbers
+    for number in left_truncatable:
+        for i in range(1, len(str(number))):
+            # Start with the first digit then add a digit each time, checking each round if the number is prime
+            new_number = int(str(number)[:i])
+            if not is_prime(new_number): 
+                break
+            if i == len(str(number)) - 1:
+                truncatable.add(number)
+                
+    # Sum all the left and right truncatable numbers
+    return sum(truncatable)
+    
+answer, time = problem_thirtyseven()
+print(f"The answer to problem thirty-seven is: {answer}    (Run in {time:.5f} s)")
