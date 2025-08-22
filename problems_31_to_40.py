@@ -1,5 +1,5 @@
 print("\rLoading packages...", end = "")
-from utils import timer, find_all_factors, sieve_primes, is_prime
+from utils import timer, find_all_factors, sieve_primes, is_prime, digits
 from fractions import Fraction
 import math
 print("\rAll packages loaded")
@@ -45,15 +45,6 @@ def problem_thirtytwo():
     """
     Find the sum of all pandigital products
     """
-    
-    def digits(n):
-        """
-        Return the set of unique digits which feature in n
-        """
-        digit_set = set()
-        for digit in str(n):
-            digit_set.add(int(digit))
-        return digit_set
 
     def factor_pairs(n):
         """
@@ -242,5 +233,72 @@ def problem_thirtyseven():
     # Sum all the left and right truncatable numbers
     return sum(truncatable)
     
-answer, time = problem_thirtyseven()
-print(f"The answer to problem thirty-seven is: {answer}    (Run in {time:.5f} s)")
+# answer, time = problem_thirtyseven()
+# print(f"The answer to problem thirty-seven is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_thirtyeight():
+    """
+    Find the longest panditigal number which can be expressed as a concatenated product
+    """
+    all_digits = set('123456789')
+    
+    pandigitals = []
+    # Given 918273645 was mentioned in the problem, to find a larger solution the original number being multiplied must begin with at least '92'.
+    for num in range(92, 10000):
+        pandigital = str(num)
+        if int(pandigital[:2]) >= 92 and len(set(pandigital)) == len(pandigital):
+            # Multiply by each digit from 1 to 9
+            for n in range(2, 9 + 1):
+                pandigital += str(num * n)
+                # Check that each multiplication doesn't add any repeated digits
+                if len(set(pandigital)) == len(pandigital) and set(pandigital) == all_digits:
+                    pandigitals.append(pandigital)
+                    break
+                # Break if a repeated digit is found at any stage
+                elif len(set(pandigital)) < len(pandigital):
+                    break
+                
+    return max(pandigitals)
+    
+# answer, time = problem_thirtyeight()
+# print(f"The answer to problem thirty-eight is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_thirtynine():
+    """
+    Find the perimeter less than 1000 of a right angle triangle which has the most decompositions into integral side lengths
+    """
+    # All pythagorean triples can be written in the form k * (m**2 - n**2), k * (2*m*n), k*(m**2 + n**2) where k, m, n are positive integers and m > n
+    
+    # Initialise a dictionary to track the counts of different perimeters that come up and a set to store each triple so as to not double count
+    triples_counter = {}
+    triples_set = set()
+    # Since m, n are squared, they only need to be checked up to sqrt(1000)
+    bound = int(math.sqrt(1000))
+    for n in range(1, bound + 1):
+        for m in range(n + 1, bound + 1):
+            for k in range(1, 1000):
+                a, b, c = sorted([k * (m**2 - n**2), k * (2*m*n), k*(m**2 + n**2)])
+                p = a + b + c
+                if p > 1000:
+                    # As soon as the perimeter is reached we can stop searching through k
+                    break
+                else:
+                    if (p, a, b, c) in triples_set:
+                        # Move on if we have already seen this triple
+                        break
+                    else:
+                        triples_set.add((p, a, b, c))
+                        # If this is a unique triple add it to the count
+                        if p in triples_counter:
+                            triples_counter[p] += 1
+                        else:
+                            triples_counter[p] = 1
+    
+    return max(triples_counter, key = triples_counter.get)
+    
+# answer, time = problem_thirtynine()
+# print(f"The answer to problem thirty-nine is: {answer}    (Run in {time:.5f} s)")

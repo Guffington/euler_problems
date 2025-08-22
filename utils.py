@@ -140,3 +140,12 @@ def aliquot_sum(n):
     sum_of_divisors -= n
     
     return sum_of_divisors
+
+def digits(n):
+        """
+        Return the set of unique digits which feature in n
+        """
+        digit_set = set()
+        for digit in str(n):
+            digit_set.add(int(digit))
+        return digit_set
