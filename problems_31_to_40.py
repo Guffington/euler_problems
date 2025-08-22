@@ -36,8 +36,8 @@ def problem_thirtyone():
     # Return the number of ways of making 200p from the most recent dictionary, which includes all coins
     return list_of_dicts[-1][200]
 
-# answer, time = problem_thirtyone()
-# print(f"The answer to problem thirty-one is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_thirtyone()
+print(f"The answer to problem thirty-one is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -74,8 +74,8 @@ def problem_thirtytwo():
     return sum(set(pandigital_numbers))
     
     
-# answer, time = problem_thirtytwo()
-# print(f"The answer to problem thirty-two is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_thirtytwo()
+print(f"The answer to problem thirty-two is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -106,8 +106,8 @@ def problem_thirtythree():
     return product.denominator
 
 
-# answer, time = problem_thirtythree()
-# print(f"The answer to problem thirty-three is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_thirtythree()
+print(f"The answer to problem thirty-three is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -127,8 +127,8 @@ def problem_thirtyfour():
     return sum(factorial_numbers)
     
     
-# answer, time = problem_thirtyfour()
-# print(f"The answer to problem thirty-four is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_thirtyfour()
+print(f"The answer to problem thirty-four is: {answer}    (Run in {time:.5f} s)")
 
 
 
@@ -165,8 +165,8 @@ def problem_thirtyfive(n):
     return len(circular_primes)
     
     
-# answer, time = problem_thirtyfive(10 ** 6)
-# print(f"The answer to problem thirty-five is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_thirtyfive(10 ** 6)
+print(f"The answer to problem thirty-five is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -180,10 +180,10 @@ def problem_thirtysix(n):
         if str(i) == str(i)[::-1] and bin(i)[2:] == bin(i)[:1:-1]:
             palindromes.append(i)
 
-    return len(palindromes)
+    return sum(palindromes)
     
-# answer, time = problem_thirtysix(10 ** 6)
-# print(f"The answer to problem thirty-six is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_thirtysix(10 ** 6)
+print(f"The answer to problem thirty-six is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -233,8 +233,8 @@ def problem_thirtyseven():
     # Sum all the left and right truncatable numbers
     return sum(truncatable)
     
-# answer, time = problem_thirtyseven()
-# print(f"The answer to problem thirty-seven is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_thirtyseven()
+print(f"The answer to problem thirty-seven is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -262,8 +262,8 @@ def problem_thirtyeight():
                 
     return max(pandigitals)
     
-# answer, time = problem_thirtyeight()
-# print(f"The answer to problem thirty-eight is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_thirtyeight()
+print(f"The answer to problem thirty-eight is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -300,5 +300,42 @@ def problem_thirtynine():
     
     return max(triples_counter, key = triples_counter.get)
     
-# answer, time = problem_thirtynine()
-# print(f"The answer to problem thirty-nine is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_thirtynine()
+print(f"The answer to problem thirty-nine is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_forty():
+    """
+    Find the product of various digits of Champernowne's Constant
+    """
+    # List of digits we want to find.
+    milestones = [10 ** n for n in range(6 + 1)]
+    
+    # List of digits we care about
+    d_list = []
+    # Track the length of Champernowne's Constant as we progress
+    length_counter = 0
+    # We add each integer to the end of Champernowne's Constant
+    number = 1
+    # For each milestone digit, we wait until the number of digits build beyond it, then add that digit to 'd_list'
+    for milestone in milestones:
+        while length_counter < milestone:
+            if length_counter + len(str(number)) >= milestone:
+                diff = (length_counter + len(str(number))) - milestone
+                # As the length exceeds each digit milestone backtrack by 'diff' and add the digit of interest as a tuple along with the milestone
+                d_list.append((milestone, int(str(number)[-diff - 1])))
+            # Add 'number' to Champernowne's Constant and count the increase in digit length
+            length_counter += len(str(number))
+            number += 1
+        
+    # Take the product of all digits of interest
+    product = 1
+    for digit in d_list:
+        product *= digit[1]
+    
+    return product
+
+    
+answer, time = problem_forty()
+print(f"The answer to problem forty is: {answer}    (Run in {time:.5f} s)")
