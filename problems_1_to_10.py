@@ -1,5 +1,8 @@
+print("Loading packages...", end = "")
 import math
 from utils import timer, prime_factors_list, primes_up_to_n, sieve_primes
+print("\rAll packages loaded")
+
     
 @timer
 def problem_one(n):

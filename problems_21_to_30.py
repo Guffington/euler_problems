@@ -1,5 +1,8 @@
+print("Loading packages...", end = "")
 import numpy as np
 from utils import timer, aliquot_sum, sieve_primes, is_prime
+print("\rAll packages loaded")
+
 
 @timer
 def problem_twentyone(bound):

@@ -1,6 +1,9 @@
+print("Loading packages...", end = "")
 import numpy as np
 import math
 from utils import timer, prime_factors_dict 
+print("\rAll packages loaded")
+
 
 @timer
 def problem_eleven():
