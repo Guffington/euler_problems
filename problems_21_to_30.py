@@ -1,6 +1,6 @@
 print("Loading packages...", end = "")
 import numpy as np
-from utils import timer, aliquot_sum, sieve_primes, is_prime
+from utils import timer, aliquot_sum, sieve_primes, is_prime, permutations
 print("\rAll packages loaded")
 
 
@@ -96,47 +96,9 @@ def problem_twentyfour(n):
     Calculate the nth permutation in order of 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
     """
     
-    def tp(string, a, b):
-        """
-        Simple transposition: swap letters a and b in 'string'. Indexed from 1.
-        """
-        if a == b:
-            return string
+    permutation_list = permutations("0123456789")
         
-        i = min(a, b) - 1
-        j = max(a, b) - 1
-        
-        return string[:i] + string[j] + string[i+1:j] + string[i] + string[j+1:]
-
-
-    def tp_2(string, list, prepend = ""):
-        """
-        Transpose last two letters of string, append both permutations to list with a prepend if chosen
-        """
-        list.append(prepend + string)
-        list.append(prepend + tp(string, len(string) - 1, len(string)))
-        return list
-        
-    def tp_n(string, list, prepend = ""):
-        """
-        Calculate all permutations of all letters of 'string', and store each in 'list'
-        This function works recursively: it builds up larger permutations from many smaller transpositions
-        """
-        if len(string) > 2:
-            # For an n-letter string, calculate all permutations on the last (n-1)-letters. Then transpose the first letter with the second letter, and calculate all permutations again. Then transpose the first letter with the third letter etc.
-            for i in range(1, len(string) + 1):
-                new_string = tp(string, 1, i)
-                # The first letter is cut-off and the algorithm is run again on the remaining (n-1)-letters. The first letter is stored in 'prepend' and re-attached to the beginning once all lower order permutations are calculated
-                list = tp_n(new_string[1:], list, prepend + new_string[0])
-        else:
-            # Recursion stops when only swapping the last two letters. All permutations are built up from this.
-            list = tp_2(string, list, prepend)
-                
-        return list
-    
-    permutations = tp_n("0123456789", [])
-        
-    return sorted(permutations)[n - 1]
+    return sorted(permutation_list)[n - 1]
 
     
 answer, time = problem_twentyfour(10**6)

@@ -149,3 +149,88 @@ def digits(n):
         for digit in str(n):
             digit_set.add(int(digit))
         return digit_set
+    
+def permutations(string):
+    """
+    Calculate all permutations of the letters in string, and return them all in a list
+    """
+    
+    def tp(string: str, a: int, b: int):
+        """
+        Simple transposition: swap letters a and b in 'string'. Indexed from 1.
+        """
+        if a == b:
+            return string
+        
+        i = min(a, b) - 1
+        j = max(a, b) - 1
+        
+        return string[:i] + string[j] + string[i+1:j] + string[i] + string[j+1:]
+
+
+    def tp_2(string: str, list: list, prepend = ""):
+        """
+        Transpose last two letters of string, append both permutations to list with a prepend if chosen
+        """
+        list.append(prepend + string)
+        list.append(prepend + tp(string, len(string) - 1, len(string)))
+        return list
+        
+    def tp_n(string: str, list: list, prepend = ""):
+        """
+        Calculate all permutations of all letters of 'string', and store each in 'list'
+        This function works recursively: it builds up larger permutations from many smaller transpositions
+        """
+        if len(string) > 2:
+            # For an n-letter string, calculate all permutations on the last (n-1)-letters. Then transpose the first letter with the second letter, and calculate all permutations again. Then transpose the first letter with the third letter etc.
+            for i in range(1, len(string) + 1):
+                new_string = tp(string, 1, i)
+                # The first letter is cut-off and the algorithm is run again on the remaining (n-1)-letters. The first letter is stored in 'prepend' and re-attached to the beginning once all lower order permutations are calculated
+                list = tp_n(new_string[1:], list, prepend + new_string[0])
+        else:
+            # Recursion stops when only swapping the last two letters. All permutations are built up from this.
+            list = tp_2(string, list, prepend)
+                
+        return list
+    
+    return tp_n(string, [])
+
+def miller_rabin(n: int, bases: list):
+    """
+    Perform the Miller-Rabin test for probable primality for all bases in 'bases'
+    """
+    if n <= 2 or type(n) != int or n % 2 == 0:
+        raise ValueError("First argument must be an odd integer greater than two")
+    
+    def factorise(n):
+        """
+        Write n - 1 in the form (2 ** r) * d, where d is an odd integer
+        """
+        d = n - 1
+        r = 0
+        while d % 2 == 0:
+            d //= 2
+            r += 1
+            
+        return d, r
+
+    def test(n, base):
+        """
+        Miller-Rabin test with a single base
+        """
+        d, r = factorise(n)
+        first_test = pow(base, d, n)
+        if first_test == 1 or first_test == n - 1:
+            return True
+        
+        for exp in range(1, r):
+            test = pow(base, (2 ** exp) * d, n)
+            if test == n - 1:
+                return True
+        return False
+        
+    for base in bases:
+        if test(n, base) == False:
+            return False
+    
+    return True
