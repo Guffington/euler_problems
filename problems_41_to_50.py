@@ -30,5 +30,34 @@ def problem_fortyone():
     # If no number is found, there must not be a pandigitial prime
     return None
 
-answer, time = problem_fortyone()
-print(f"The answer to problem thirty-one is: {answer}    (Run in {time:.5f} s)")
+# answer, time = problem_fortyone()
+# print(f"The answer to problem forty-one is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_fortytwo():
+    """
+    Calculate the number of words in problem_fortytwo_words.txt have a value which is a triangle number
+    """
+    # Read in the file, formatting the words into a standard form
+    with open("problem_fortytwo_words.txt", 'r') as w:
+        words = w.read().split(",")
+        words = [word.strip().strip('"').lower() for word in words]
+        words = sorted(words)
+        
+    # Calculate the first 50 triangle numbers, which should contain large enough numbers to cover the value of any word in the file. A word would need to have a minimum of 48 letters to possibly have more a value larger than the 50th triangle number
+    triangle_numbers = set([n * (n + 1) / 2 for n in range(50)])
+    triangle_counter = 0
+    for word in words:
+        # Use ord to calculate the value of each letter, summing the result
+        word_value = sum(ord(letter) - ord('a') + 1 for letter in word)
+        # Put in a warning for the small chance in which we haven't listed enough triangle numbers
+        if word_value > max(triangle_numbers):
+            print("Warning: Word found with value larger than all computed triangle numbers. Increase set of triangle numers!")
+        if word_value in triangle_numbers:
+            triangle_counter += 1
+    
+    return triangle_counter
+
+# answer, time = problem_fortytwo()
+# print(f"The answer to problem forty-two is: {answer}    (Run in {time:.5f} s)")
