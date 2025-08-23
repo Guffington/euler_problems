@@ -1,7 +1,7 @@
 # Solutions to the Euler Problems
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
-![Project Euler](https://img.shields.io/badge/Project%20Euler-30%20problems-orange)
+![Project Euler](https://img.shields.io/badge/Project%20Euler-40%20problems-orange)
 ![Last Commit](https://img.shields.io/github/last-commit/Guffington/euler_problems)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green)
 
@@ -32,7 +32,9 @@ euler_problems/
 ├── problems_1_to_10.py           # Solutions to problems 1–10
 ├── problems_11_to_20.py          # Solutions to problems 11–20
 ├── problems_21_to_30.py          # Solutions to problems 21–30
+├── problems_31_to_40.py          # Solutions to problems 31–40
 ├── utils.py                      # Shared helper functions
+├── problem_eightn_number.txt     # Input data for Problem 8
 ├── problem_eleven_number.txt     # Input data for Problem 11
 ├── problem_thirteen_numbers.txt  # Input data for Problem 13
 ├── problem_eighteen_triangle.txt # Input data for Problem 18
@@ -89,6 +91,6 @@ Comment out the function call (below each function) to stop computing a particul
 I intend to continue solving additional Project Euler problems and expand this repository.  
 Future updates will include:
 
-- Solutions to problems 31 and beyond.
+- Solutions to problems 41 and beyond.
 
 - Optimizations and refactorings of existing solutions.
