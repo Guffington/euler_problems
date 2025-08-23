@@ -61,3 +61,32 @@ def problem_fortytwo():
 
 # answer, time = problem_fortytwo()
 # print(f"The answer to problem forty-two is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_fortythree():
+    """
+    Find the sum of all 0 to 9 pandigital numbers with the divisibility property
+    """
+    permutation_list = permutations("0123456789")
+    # Remove numbers beginning with zero, not considered 0 to 9 pandigital
+    permutation_list = sorted([permutation for permutation in permutation_list if permutation[0] != "0"])
+    # List of primes to test
+    primes = [2, 3, 5, 7, 11, 13, 17]
+    
+    divisible = []
+    for permutation in permutation_list:
+        # Loop through all the 3-digit combinations
+        for i in range(1, 8):
+            number = int(permutation[i:i + 3])
+            # Move on if one divisibility criterion fails
+            if number % primes[i - 1] != 0:
+                break
+            # If it passes all the divisibility criteria then add the number to the list
+            if i == 7:
+                divisible.append(int(permutation))
+            
+    return sum(divisible)
+
+# answer, time = problem_fortythree()
+# print(f"The answer to problem forty-three is: {answer}    (Run in {time:.5f} s)")
