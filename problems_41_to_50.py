@@ -1,5 +1,6 @@
 print("\rLoading packages...", end = "")
 from utils import timer, permutations, miller_rabin
+import math
 print("\rAll packages loaded")
 
 
@@ -90,3 +91,29 @@ def problem_fortythree():
 
 # answer, time = problem_fortythree()
 # print(f"The answer to problem forty-three is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_fortyfour():
+    """
+    Find the minimal difference between pairs of pentagonal numbers whose sum and difference is also pentagonal
+    """
+    
+    # Create a very large set of pentagonal numbers to check. Use a set rather than a list for fast lookup
+    pentagonal_numbers = set([(n * (3*n - 1)) // 2 for n in range(1, 10 ** 5 + 1)])
+    
+    for x in range(len(pentagonal_numbers)):
+        # Make sure y < x
+        for y in range(1, x):
+            # Generate two pentagonal numbers
+            p1 = (x * (3 * x - 1)) // 2
+            p2 = (y * (3 * y - 1)) // 2
+            # Check their sum and difference
+            if p1 + p2  in pentagonal_numbers:
+                if p1 - p2 in pentagonal_numbers:
+                    # As soon as one is found it will be the solution, since the pentagonal numbers grow monotonically, all smaller differences will have been checked
+                    return p1 - p2
+    
+    
+# answer, time = problem_fortyfour()
+# print(f"The answer to problem forty-four is: {answer}    (Run in {time:.5f} s)")
