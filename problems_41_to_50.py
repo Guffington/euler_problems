@@ -1,5 +1,5 @@
 print("\rLoading packages...", end = "")
-from utils import timer, permutations, miller_rabin
+from utils import timer, permutations, miller_rabin, sieve_primes, is_prime, prime_factors_dict
 import math
 print("\rAll packages loaded")
 
@@ -31,8 +31,8 @@ def problem_fortyone():
     # If no number is found, there must not be a pandigitial prime
     return None
 
-# answer, time = problem_fortyone()
-# print(f"The answer to problem forty-one is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_fortyone()
+print(f"The answer to problem forty-one is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -60,8 +60,8 @@ def problem_fortytwo():
     
     return triangle_counter
 
-# answer, time = problem_fortytwo()
-# print(f"The answer to problem forty-two is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_fortytwo()
+print(f"The answer to problem forty-two is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -89,8 +89,8 @@ def problem_fortythree():
             
     return sum(divisible)
 
-# answer, time = problem_fortythree()
-# print(f"The answer to problem forty-three is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_fortythree()
+print(f"The answer to problem forty-three is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -115,5 +115,199 @@ def problem_fortyfour():
                     return p1 - p2
     
     
-# answer, time = problem_fortyfour()
-# print(f"The answer to problem forty-four is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_fortyfour()
+print(f"The answer to problem forty-four is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_fortyfive():
+    """
+    Return the next number after 40755 which is triangular, pentagonal and hexagonal
+    """
+    # Initialise sets and n
+    triangle, pentagonal, hexagonal, n = set(), set(), set(), 3
+    
+    # Compute all three sets of numbers up to 10 ** n until their intersection contains a new element
+    while len(triangle & pentagonal & hexagonal) <= 2:
+        triangle = set([(n * (n + 1)) // 2 for n in range(1, 10 ** n)])
+        pentagonal = set([(n * (3*n - 1)) // 2 for n in range(1, 10 ** n)])
+        hexagonal = set([(n * (2*n - 1)) for n in range(1, 10 ** n)])
+        n += 1
+    
+    # Return the next number after 40755, which will be the smallest element after 1 and 40755 are removed from the sets.
+    return min((triangle & pentagonal & hexagonal) - set([1, 40755]))
+    
+    
+answer, time = problem_fortyfive()
+print(f"The answer to problem forty-five is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_fortysix():
+    """
+    Return the smallest odd composite number which cannot be written as the sum of a prime and twice a square
+    """
+    def squares(n):
+        """
+        Return all square numbers up to n
+        """
+        return set([n ** 2 for n in range(1, int(math.sqrt(n)))])
+    
+    # Smallest odd composite number
+    n = 9
+    while 1 > 0:
+        # Filter number for odd composite numbers
+        if n % 2 == 1 and not is_prime(n):
+            # Find all primes below n (not including 2)
+            lower_primes = sieve_primes(n)[1:]
+            # Find all squares below n
+            squares_set = squares(n)
+            for prime in lower_primes:
+                if (n - prime) // 2 in squares_set:
+                    # If a decomposition is found, move on to next n
+                    break
+                # If all primes have been tested an no decomposition has been found, n must be the soluton
+                if prime == max(lower_primes):
+                    return n
+        n += 1
+
+
+answer, time = problem_fortysix()
+print(f"The answer to problem forty-six is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_fortyseven(n):
+    """
+    Return the first, of the first four consecutive numbers to have four distinct prime factors (including multiplicity)
+    """
+    number = 6
+    while 1 > 0:
+        decomposition_set = set()
+        for i in range(n):
+            dict_items = prime_factors_dict(number + i).items()
+            for item in dict_items:
+                decomposition_set.add(item)
+        if len(decomposition_set) == n ** 2:
+            return number
+        number += 1
+    
+
+answer, time = problem_fortyseven(4)
+print(f"The answer to problem forty-seven is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_fortyeight(n):
+    """
+    Return the sum of 1 ** 1 + 2 ** 2 + ... + n ** n
+    """
+    # Use efficent pow function to do multiplication with modulo
+    digits = str(sum(pow(i, i, 10 ** 10) for i in range(1, n + 1)) % (10 ** 10))
+    
+    # If the last ten digits begin with zeros we need to re-append them at the beginning for display
+    if len(digits) < 10:
+        digits = ("0" * (10 - len(digits))) + digits
+    
+    return digits
+    
+    
+answer, time = problem_fortyeight(1000)
+print(f"The answer to problem forty-eight is: {answer}    (Run in {time:.5f} s)")
+    
+    
+@timer
+def problem_fortynine():
+    """
+    Find the only 4-digit arithmetic sequence  of three primes which are all permutations of each other, other than (1487, 4817, 8147)
+    """
+    # Generate all primes with up to 4 digits
+    primes = sieve_primes(10 ** 4)
+    # Remove any primes with less than 4 digits
+    primes = [prime for prime in primes if prime > 10 ** 3]
+    # Create a set of primes for easy look-up
+    primes_set = set(primes)
+    
+    # The set 'checked' will contain all 4 digit numbers considered thus far
+    checked = set()
+    # The list 'found' will contain all successful arthimetic permutation prime 4-digit sequences
+    found = []
+    
+    for prime in primes:
+        # Don't bother if we've already seen a number
+        if prime not in checked:
+            # Remove any duplicates that can arise during permuting. This can happen if digits are repeated
+            permutation_list = sorted(list(set(permutations(str(prime)))))
+            # Create a version of the permutation list with integers rather than strings
+            permutation_list_int = list(map(int, permutation_list))
+            # Filter out all permutations which which are not prime or don't have 4 digits; the latter can occur when a 4 digit number contains a 0 digit
+            prime_permutations = [permutation  for permutation in permutation_list_int if permutation in primes_set and len(str(permutation)) == 4]
+            # Only continue if there are at least 3 primes remaining, the minimal number required for an arithmetic sequence
+            if len(prime_permutations) >= 3:
+                # Find any possible arithmetic sequences: search through differences between any two numbers, and see if theres a third number with the same difference with the second
+                for i in range(len(prime_permutations) - 2):
+                    for j in range(i + 1, len(prime_permutations) - 1):
+                        difference = prime_permutations[j] - prime_permutations[i]
+                        number = prime_permutations[j] + difference
+                        if number in prime_permutations:
+                            found.append((prime_permutations[i], prime_permutations[j], number))
+            # Add all numbers seen to the checked set, so as to not consider them again
+            checked = checked | set(permutation_list_int)
+                
+            # We know there are only two arithmetic sequences, stop searching once they're found
+            if len(found) >= 2:
+                break
+    
+    for sequence in found:
+        # Filter out the sequence already given in the problem
+        if sequence != (1487, 4817, 8147):
+            # Concatenate the numbers of the remaining sequence; return the concatenation
+            concatenation = ""
+            for number in sequence:
+                concatenation += str(number)
+            return concatenation
+
+answer, time = problem_fortynine()
+print(f"The answer to problem forty-nine is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_fifty(bound):
+    """
+    Find the largest sequence of primes numbers which sum up to a prime below 'bound'
+    """
+    # Generate a list of all primes up to 'bound'
+    primes = sieve_primes(bound)
+    # Create a set of primes for easy lookup
+    prime_set = set(primes)
+    
+    # We can find an upper bound on the possible sequence lengths of primes by summing the smallest primes until we exceed bound
+    counter = 0
+    total = 0
+    for prime in primes:
+        total += prime
+        counter += 1
+        if total > primes[-1]:
+            sequence_bound = counter - 1
+            break
+    
+    
+    largest = 0
+    # Search sequence lengths backwards from the largest sequence length
+    for length in reversed(range(1, sequence_bound + 1)):
+        for i, prime in enumerate(primes):
+            # Find the sum of the sequence of 'length' consecutive primes beginning with 'prime'
+            sequence_sum = sum([primes[i + j] for j in range(length)])
+            if sequence_sum in prime_set and sequence_sum > largest:
+                largest = sequence_sum
+            # We can stop searching through sequences of length 'length' once the sums are exceeding the bound.
+            if sequence_sum >= primes[-1]:
+                if largest > 0:
+                    # If we have found a prime sequence, it must be the largest possible since we are searching in reverse length order
+                    return largest
+                else:
+                    break
+    
+    
+answer, time = problem_fifty(10 ** 6)
+print(f"The answer to problem fifty is: {answer}    (Run in {time:.5f} s)")
