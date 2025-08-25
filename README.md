@@ -88,6 +88,8 @@ print(f"The answer to problem one is: {answer}    (Run in {time:.5f} s)")
 
 Comment out the function call (below each function) to stop computing a particular solution.
 
+Where possible, my solution functions can be computed for an arbitrary parameter (often 'n' or 'bound' etc.). The function is called using the parameter requested in the original Euler problem but can be change to any value of interest.
+
 Many problems may appear solved quite simply by using functions from utils.py. However, these functions were written by me and should be considered part of my solution.
 
 ## Future Plans
