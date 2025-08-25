@@ -33,7 +33,8 @@ euler_problems/
 ├── problems_11_to_20.py          # Solutions to problems 11–20
 ├── problems_21_to_30.py          # Solutions to problems 21–30
 ├── problems_31_to_40.py          # Solutions to problems 31–40
-├── utils.py                      # Shared helper functions
+├── problems_41_to_50.py          # Solutions to problems 41–50
+├── utils.py                      # Shared useful functions
 ├── problem_eight_number.txt      # Input data for Problem 8
 ├── problem_eleven_number.txt     # Input data for Problem 11
 ├── problem_thirteen_numbers.txt  # Input data for Problem 13
@@ -86,6 +87,8 @@ print(f"The answer to problem one is: {answer}    (Run in {time:.5f} s)")
 ```
 
 Comment out the function call (below each function) to stop computing a particular solution.
+
+Many problems may appear solved quite simply by using functions from utils.py. However, these functions were written by me and should be considered part of my solution.
 
 ## Future Plans
 
