@@ -1,5 +1,5 @@
 print("\rLoading packages...", end = "")
-from utils import timer, sieve_primes
+from utils import timer, sieve_primes, miller_rabin
 import math
 from fractions import Fraction
 print("\rAll packages loaded")
@@ -274,5 +274,33 @@ def problem_fiftyseven(n):
     
     return numerator_counter
     
-answer, time = problem_fiftyseven(1000)
-print(f"The answer to problem fifty-seven is: {answer}    (Run in {time:.5f} s)")
+# answer, time = problem_fiftyseven(1000)
+# print(f"The answer to problem fifty-seven is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_fiftyeight():
+    """
+    Return the smallest n where is an n x n spiral grid which for which the ratio of prime numbers to all numbers on the diagonals is less than 0.1
+    """
+    # For an n x n spiral grid, the bottom-right diagonal is given by (2k + 1) ** 2, where k runs from 0 to (n - 1)/2. For each layer, the other four diagonals are found from the bottom right diagonal by subtracting 2k, 4k and 6k.
+    n = 1
+    ratio = 1
+    prime_counter = 0
+    
+    while ratio >= 0.1:
+        n += 2
+        # For each increase in n, check whether the three new non-square diagonals are primes
+        for j in range(1, 3 + 1):
+            number = (n ** 2) - ((n - 1) * j)
+            # Use the Miller-Rabin test for a fast test of large primes
+            if miller_rabin(number):
+                prime_counter += 1
+        
+        # Check the ratio of prime diagonal numbers to all diagonal numbers
+        ratio = prime_counter / (2 * n - 1)
+            
+    return n
+    
+# answer, time = problem_fiftyeight()
+# print(f"The answer to problem fifty-eight is: {answer}    (Run in {time:.5f} s)")

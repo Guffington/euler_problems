@@ -198,7 +198,7 @@ def problem_twentyeight(n):
     Calculate the sum of of the diagonals of an n x n spiral grid
     """
     
-    # For an n x n spiral grid, the top-right diagonal is given by (2k + 1) ** 2, where k runs from 0 to (n - 1)/2. For each layer, the other four corners are found from the top right corner by subtracting 2k, 4k and 8k.
+    # For an n x n spiral grid, the top-right diagonal is given by (2k + 1) ** 2, where k runs from 0 to (n - 1)/2. For each layer, the other four corners are found from the top right corner by subtracting 2k, 4k and 6k.
     
     if n % 2 == 0 or n <= 2 or type(n) != int:
         raise ValueError("n must be an odd integer greater than or equal to 3." )

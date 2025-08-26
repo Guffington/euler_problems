@@ -195,12 +195,14 @@ def permutations(string):
     
     return tp_n(string, [])
 
-def miller_rabin(n: int, bases: list):
+def miller_rabin(n: int, bases: list = [2, 3, 5, 7, 11, 13]):
     """
     Perform the Miller-Rabin test for probable primality for all bases in 'bases'
     """
-    if n <= 2 or type(n) != int or n % 2 == 0:
-        raise ValueError("First argument must be an odd integer greater than two")
+    if n < 2 or type(n) != int or n % 2 == 0:
+        raise ValueError("First argument must be an odd integer greater than or equal to two")
+    elif n in bases:
+        return True
     
     def factorise(n):
         """
@@ -229,6 +231,7 @@ def miller_rabin(n: int, bases: list):
                 return True
         return False
         
+    
     for base in bases:
         if test(n, base) == False:
             return False
