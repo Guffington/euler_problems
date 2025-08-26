@@ -255,13 +255,24 @@ def problem_fiftysix(n):
 # print(f"The answer to problem fifty-six is: {answer}    (Run in {time:.5f} s)")
 
 
-
-def problem_fiftyseven():
+@timer
+def problem_fiftyseven(n):
     """
-    
+    Return the number of fractions in the continued fraction sequence of root(2) for which the numerator has more digits than the denominator
     """
-    print(Fraction(1 + 1/2))
+    # The root two sequence can be generated recursively, beginning with 1
+    root_2 = [1]
+    numerator_counter = 0
     
+    for _ in range(n):
+        # Generate the next fraction in the sequence, given the most recent one
+        next = 1 + Fraction(1, 1 + root_2[-1])
+        if len(str(next.numerator)) > len(str(next.denominator)):
+            numerator_counter += 1
+        # Append the new number to the sequence
+        root_2.append(next)
     
-print(problem_fiftyseven())
-# print(f"The answer to problem fifty-seven is: {answer}    (Run in {time:.5f} s)")
+    return numerator_counter
+    
+answer, time = problem_fiftyseven(1000)
+print(f"The answer to problem fifty-seven is: {answer}    (Run in {time:.5f} s)")
