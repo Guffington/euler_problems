@@ -88,12 +88,121 @@ def problem_fiftythree():
 # print(f"The answer to problem fifty-three is: {answer}    (Run in {time:.5f} s)")
 
 
-
+@timer
 def problem_fiftyfour():
     """
-    
+    Return the number of player one wins in problem_fiftyfour_poker.txt
     """
+    # Import the file
+    with open("problem_fiftyfour_poker.txt", 'r') as t:
+        hands = t.read().split("\n")
+        
+    # Separate the hands into player one and player two
+    person_one = []
+    person_two = []
+    for pair in hands:
+        cards = pair.split()
+        first = cards[:5]
+        second = cards[5:]
+        
+        person_one.append(first)
+        person_two.append(second)
+
+    # Converting cards and hands to numerical values for the purposes of comparison
+    card_value = {"2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "T": 10, "J": 11, "Q": 12, "K": 13, "A": 14}
+    hand_value = {"High Card": 1, "One Pair": 2, "Two Pair": 3, "Three of a Kind": 4, "Straight": 5, "Flush": 6, "Full House": 7, "Four of a Kind": 8, "Straight Flush": 9, "Royal Flush": 10}
     
+    def hand(hand):
+        """
+        Return the name of 'hand' and the numerical values of the hand decomposition
+        """
+        # List of suits in the hand
+        suits = [card[-1] for card in hand]
+        # List of numbers in the hand
+        numbers = sorted([card_value[card[0]] for card in hand])
+        # Create a dictionary to count multiplicity of each card
+        numbers_dict = {}
+        for number in numbers:
+            numbers_dict[number] = numbers.count(number)
+        
+        # List of distinct card number values, sorted in decending order by multiplicity, then by card value itself. This will be used to compare the 'next highest card' if two hands are equal
+        card_list = sorted(numbers_dict, key=lambda k: (numbers_dict[k], k), reverse=True)
+        
+        # First check for flushes and straights; if a hand contains any kind of flush or straight, it cannot have any kind of pair
+        if len(set(suits)) == 1:
+            flush = True
+        else:
+            flush = False
+        # Straights have 5 consecutive numbers
+        if len(set(numbers)) == 5 and max(numbers) - min(numbers) == 4:
+            straight = True
+        else: 
+            straight = False
+        if flush == True:
+            if straight == True:
+                # A royal flush is a straight flush beginning at 10
+                if min(numbers_dict.keys()) == 10:
+                    return "Royal Flush", card_list
+                else:
+                    return "Straight Flush", card_list
+            else:
+                return "Flush", card_list
+        elif straight == True:
+            return "Straight", card_list
+        
+        # If no flushes or straights were found, look for pairs
+        if max(numbers_dict.values()) == 4:
+            return "Four of a Kind", max(numbers_dict, key = numbers_dict.get)
+        elif max(numbers_dict.values()) == 3:
+            if min(numbers_dict.values()) == 2:
+                return "Full House", card_list
+            else:
+                return "Three of a Kind", card_list
+        elif max(numbers_dict.values()) == 2:
+            # Two determine whether there is two pairs or only one pair, count the number of 2s in the numbers_dict
+            pair_count = [value for value in numbers_dict.values()].count(2)
+            if pair_count == 2:
+                return "Two Pair", card_list
+            else:
+                return "One Pair", card_list
+        else:
+            return "High Card", card_list
+        
+    def compare_hands(first_hand, second_hand):
+        """
+        Compare two hands and return the winner
+        """
+        hand_one = hand(first_hand)
+        hand_two = hand(second_hand)
+        
+        if hand_value[hand_one[0]] > hand_value[hand_two[0]]:
+            return 1
+        elif hand_value[hand_one[0]] < hand_value[hand_two[0]]:
+            return 2
+        else:
+            # If the two hands have the same hand description, compare the quality of each hand numerically, by moving along card_list
+            list_one = hand_one[1]
+            list_two = hand_two[1]
+            for i in range(len(list_one)):
+                if list_one[i] > list_two[i]:
+                    return 1
+                elif list_one[i] < list_two[i]:
+                    return 2
+        # If both hands are identically valued, it's a draw
+        return 0
     
-print(problem_fiftyfour())
-# print(f"The answer to problem fifty-four is: {answer}    (Run in {time:.5f} s)")
+    # Count the number of player one wins
+    person_one_score = 0
+    # Compare every hand between player one and player two
+    for hand_number in range(len(person_one)):
+       result = compare_hands(person_one[hand_number], person_two[hand_number])
+       if result == 1:
+           person_one_score += 1
+       elif result == 0:
+           # There should be no draws, any draw is an indication of a bug i coding
+           raise ValueError(f"Draw found on hand number {hand_number + 1}")                
+    
+    return person_one_score
+
+answer, time = problem_fiftyfour()
+print(f"The answer to problem fifty-four is: {answer}    (Run in {time:.5f} s)")
