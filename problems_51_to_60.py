@@ -1,6 +1,7 @@
 print("\rLoading packages...", end = "")
 from utils import timer, sieve_primes
 import math
+from fractions import Fraction
 print("\rAll packages loaded")
 
 
@@ -204,5 +205,63 @@ def problem_fiftyfour():
     
     return person_one_score
 
-answer, time = problem_fiftyfour()
-print(f"The answer to problem fifty-four is: {answer}    (Run in {time:.5f} s)")
+# answer, time = problem_fiftyfour()
+# print(f"The answer to problem fifty-four is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_fiftyfive(n):
+    """
+    Return the number of Lychrel numbers below n
+    """
+    lychrel = []
+    # Search through all number up to n
+    for number in range(n):
+        new_number = number
+        # Perform 50 iterations per number to find a palindrome
+        for iteration in range(50):
+            new_number += int(str(new_number)[::-1])
+            if new_number == int(str(new_number)[::-1]):
+                # Move to next number if a palindrome is found
+                break
+            # If no palindrome is found after 50 iterations, we have found a Lychrel number
+            if iteration == 50 - 1:
+                lychrel.append(number)
+                
+    return len(lychrel)
+    
+
+# answer, time = problem_fiftyfive(10 ** 4)
+# print(f"The answer to problem fifty-five is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_fiftysix(n):
+    """
+    Find the maximal digit sub of any number of the form a ** b where a, b < n
+    """
+    maximum = 0
+    for a in range(n):
+        for b in range(n):
+            number = pow(a, b)
+            # Sum the digits of a ** b
+            digit_sum = sum([int(i) for i in str(number)])
+            if digit_sum > maximum:
+                maximum = digit_sum
+    
+    return maximum
+    
+# answer, time = problem_fiftysix(100)
+# print(f"The answer to problem fifty-six is: {answer}    (Run in {time:.5f} s)")
+
+
+
+def problem_fiftyseven():
+    """
+    
+    """
+    print(Fraction(1 + 1/2))
+    
+    
+print(problem_fiftyseven())
+# print(f"The answer to problem fifty-seven is: {answer}    (Run in {time:.5f} s)")
