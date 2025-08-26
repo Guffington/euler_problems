@@ -1,5 +1,6 @@
 print("\rLoading packages...", end = "")
 from utils import timer, sieve_primes
+import math
 print("\rAll packages loaded")
 
 
@@ -66,3 +67,33 @@ def problem_fiftytwo(n):
 
 # answer, time = problem_fiftytwo(6)
 # print(f"The answer to problem fifty-two is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_fiftythree():
+    """
+    Return the number of times n choose k is greater than 10 ** 6 for 1 <= n <= 100.
+    """
+    million_counter = 0
+    for n in range(23, 100 + 1):
+        # No need to consider n choose 0, 1, n or n-1 as these are guaranteed to be less than 10 ** 6
+        for k in range(2, n - 1):
+            if math.comb(n, k) > 10 ** 6:
+                million_counter += 1
+                
+    return million_counter
+    
+    
+# answer, time = problem_fiftythree()
+# print(f"The answer to problem fifty-three is: {answer}    (Run in {time:.5f} s)")
+
+
+
+def problem_fiftyfour():
+    """
+    
+    """
+    
+    
+print(problem_fiftyfour())
+# print(f"The answer to problem fifty-four is: {answer}    (Run in {time:.5f} s)")
