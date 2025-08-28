@@ -304,3 +304,61 @@ def problem_fiftyeight():
     
 # answer, time = problem_fiftyeight()
 # print(f"The answer to problem fifty-eight is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_fiftynine():
+    """
+    Decode the encrypted message and return the sum of the ascii values of each character
+    """
+    # Open the code and load it into the variable 'code'
+    with open("problem_fiftynine_code.txt", 'r') as t:
+        code = t.read().split(",")
+        code = list(map(int, code))
+    
+    # Generate all possible 3-letter keys consisting of lower case letters
+    keys_list = []
+    for i in range(26):
+        for j in range(26):
+            for k in range(26):
+                keys_list.append((97 + i, 97 + j, 97 + k))
+    
+    # Since the encoded text is normal English text, the possible ascii characters can only be a subset
+    acceptable_characters = set(range(32, 127)) 
+    codes_list = []
+    successful_keys = []
+    for key in keys_list:
+        decrypted_code = []
+        # We search through only the first 200 characters in the code, making the task more managable; and we discard all keys which produce an ascii key outside our acceptable range
+        for letter in range(200):
+            # Use the XOR gate on each letter and the associated key
+            letter_decrypted = code[letter] ^ key[letter % 3]
+            if letter_decrypted not in acceptable_characters:
+                # Discard keys which return unacceptable letters
+                break
+            else:
+                decrypted_code.append(letter_decrypted)
+        if len(decrypted_code) == 200:
+            # Only append those codes with acceptable letters
+            codes_list.append(decrypted_code)
+            successful_keys.append(key)
+            
+    # Find the code with the most spaces (ASCII code 32), which is most likley the correct decryption
+    spaces_count = [words.count(32) for words in codes_list]
+    # Return the key associated to the code with the most spaces
+    correct_key = successful_keys[spaces_count.index(max(spaces_count))]
+    
+    # Now decrypt the entire message with the correct key
+    message = []
+    for index, letter in enumerate(code):
+        message.append(letter ^ correct_key[index % 3])
+    
+    # To see the full message, uncomment the following line)
+    # print("".join(list(map(chr, message))))
+    
+    # Sum the ASCII values of the decrypted message
+    return sum(message)
+    
+    
+answer, time = problem_fiftynine()
+print(f"The answer to problem fifty-nine is: {answer}    (Run in {time:.5f} s)")
