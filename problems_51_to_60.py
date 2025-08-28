@@ -39,8 +39,8 @@ def problem_fiftyone(n):
         num_of_digits += 1
 
     
-# answer, time = problem_fiftyone(8)
-# print(f"The answer to problem fifty-one is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_fiftyone(8)
+print(f"The answer to problem fifty-one is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -66,8 +66,8 @@ def problem_fiftytwo(n):
         # If we haven't found such a number with the current number of digitis, increase the number of digits
         num_of_digits += 1
 
-# answer, time = problem_fiftytwo(6)
-# print(f"The answer to problem fifty-two is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_fiftytwo(6)
+print(f"The answer to problem fifty-two is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -85,8 +85,8 @@ def problem_fiftythree():
     return million_counter
     
     
-# answer, time = problem_fiftythree()
-# print(f"The answer to problem fifty-three is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_fiftythree()
+print(f"The answer to problem fifty-three is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -205,8 +205,8 @@ def problem_fiftyfour():
     
     return person_one_score
 
-# answer, time = problem_fiftyfour()
-# print(f"The answer to problem fifty-four is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_fiftyfour()
+print(f"The answer to problem fifty-four is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -231,8 +231,8 @@ def problem_fiftyfive(n):
     return len(lychrel)
     
 
-# answer, time = problem_fiftyfive(10 ** 4)
-# print(f"The answer to problem fifty-five is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_fiftyfive(10 ** 4)
+print(f"The answer to problem fifty-five is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -251,8 +251,8 @@ def problem_fiftysix(n):
     
     return maximum
     
-# answer, time = problem_fiftysix(100)
-# print(f"The answer to problem fifty-six is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_fiftysix(100)
+print(f"The answer to problem fifty-six is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -274,8 +274,8 @@ def problem_fiftyseven(n):
     
     return numerator_counter
     
-# answer, time = problem_fiftyseven(1000)
-# print(f"The answer to problem fifty-seven is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_fiftyseven(1000)
+print(f"The answer to problem fifty-seven is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -302,8 +302,8 @@ def problem_fiftyeight():
             
     return n
     
-# answer, time = problem_fiftyeight()
-# print(f"The answer to problem fifty-eight is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_fiftyeight()
+print(f"The answer to problem fifty-eight is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -362,3 +362,48 @@ def problem_fiftynine():
     
 answer, time = problem_fiftynine()
 print(f"The answer to problem fifty-nine is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_sixty(n):
+    """
+    Return the smallest sum of n primes such that any pair of them concatenated in any order is prime.
+    """
+    # Generate all primes up to 10,000 (excluding 1)
+    primes = sorted(sieve_primes(10 ** 4)[1:])
+    
+    # Initialize a dictionary where each single-prime tuple maps to primes greater than it
+    # that are 'concatenation compatible'
+    two_primes_dict = {(prime,): set() for prime in primes}
+    
+    # Populate two-prime compatibility sets
+    for i, prime in enumerate(primes):
+        for j in range(i + 1, len(primes)):
+            second_prime = primes[j]
+            # Concatenate primes numerically
+            concat_one = prime * (10 ** (len(str(second_prime)))) + second_prime
+            concat_two = second_prime * (10 ** (len(str(prime)))) + prime
+            # Keep primes where both concatenations are prime
+            if miller_rabin(concat_one) and miller_rabin(concat_two):
+                two_primes_dict[(prime,)].add(second_prime)
+    
+    # Iteratively build sets of compatible primes of increasing size
+    old_dict = two_primes_dict
+    for i in range(2, n):
+        new_dict = {}
+        for key, value_set in old_dict.items():
+            # Intersection of primes compatible with each prime in 'key'
+            key_sets_int = set.intersection(*[two_primes_dict[(k,)] for k in key])
+            for prime in value_set:
+                # Find primes compatible with 'key' extended by 'prime'
+                intersection = key_sets_int & two_primes_dict[(prime,)]
+                # Keep only sets that can potentially reach size n
+                if len(intersection) > n - i - 1:
+                    new_dict[key + (prime,)] = intersection
+                    # If we've reached n-1 primes, the first valid extension yields minimal sum
+                    if i == n - 1:
+                        return sum(key + (prime,)) + min(intersection)
+        old_dict = new_dict
+    
+answer, time = problem_sixty(5)
+print(f"The answer to problem sixty is: {answer}    (Run in {time:.5f} s)")

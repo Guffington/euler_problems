@@ -199,10 +199,13 @@ def miller_rabin(n: int, bases: list = [2, 3, 5, 7, 11, 13]):
     """
     Perform the Miller-Rabin test for probable primality for all bases in 'bases'
     """
+
     if n < 2 or type(n) != int or n % 2 == 0:
         raise ValueError("First argument must be an odd integer greater than or equal to two")
     elif n in bases:
         return True
+    elif n % 2 == 0:
+        return False
     
     def factorise(n):
         """
