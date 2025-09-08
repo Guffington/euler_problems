@@ -240,3 +240,70 @@ def miller_rabin(n: int, bases: list = [2, 3, 5, 7, 11, 13]):
             return False
     
     return True
+
+def totient(n):
+    """
+    Use a sieve method to generate a list of phi(m) for m from 2 up to n.
+    Tot[0] = 0 and tot[1] = 1 by convention, so that phi(m) = tot[m].
+    """
+    # First generate a list of all integers
+    tot = [i for i in range(n)]
+    for p in range(2, n):
+        # If tot[index] == index the number must be prime, since composite numbers will be reduced
+        if tot[p] == p:
+            # For each multiple of each prime, multiply that entry in tot by (1 - 1 / prime)
+            for n in range(p, n, p):
+                tot[n] -= (tot[n] // p)
+    
+    return tot
+
+def euclid(a, b):
+    """
+    Returns the greatest common divisor of a and b using Euclid's algorithm
+    """
+    m = max(a,b)
+    n = min(a,b)
+    
+    while 1 > 0:
+        q = m // n
+        r = m - q * n
+        if r == 0:
+            return n
+        m = n
+        n = r
+
+
+def continuing_fraction(n):
+    """
+    Return the continuing fracion representation of sqrt(num)
+    """
+    if type(n) != int or n < 1:
+        raise ValueError("Argument must be a positive integer")
+    
+    # Check if the number is a square, and return immediately if so
+    base = int(math.sqrt(n))
+    if base ** 2 == n:
+        return [base, (0,)]
+    
+    cont_frac = [base, ()]
+    # Repetitions will keep track of the decompositons we've seen, to spot when the continued fraction decomposition begins to repeat
+    repetitions = set()
+    
+    # Initialise the numerator and denominator
+    num, denom = base, 1
+    while 1 > 0:
+        # Calculate the new denominator using 'rationalising the denominator'
+        denom = (n - num ** 2) // denom
+        # Extract the integer part from the radical fraction
+        m = (base + num) // denom
+        # Reduce the numerator accordingly, and normlise to make it positive
+        num = -(num -  m * denom)
+        # Check if we've seen this combination of numerator, denominator and integer part before
+        if (m, num, denom) not in repetitions:
+            # If not, add it to the list and append m to the continued fraction decomposition
+            repetitions.add((m, num, denom))
+            cont_frac[1] += (m,)
+        else:
+            # If we've seen this combination already, the continued fraction is repeating so we stop
+            return cont_frac
+        

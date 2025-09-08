@@ -1,5 +1,6 @@
 print("\rLoading packages...", end = "")
-from utils import timer, prime_factors_dict, sieve_primes
+from utils import timer, totient, sieve_primes, continuing_fraction
+import numpy as np
 from fractions import Fraction
 import math
 print("\rAll packages loaded")
@@ -192,41 +193,48 @@ def problem_sixtyfive(n):
 # print(f"The answer to problem sixty-five is: {answer}    (Run in {time:.5f} s)") 
 
 
+@timer
 def problem_sixtysix():
     """
-    COMMENT
+    Return the D with the largest x for the minimal solution where D <= 10 ** 3
     """
-    def check_x(x, d):
-        """
-        COMMENT
-        """
-        x_sq = x ** 2
-        y_sq = int(math.sqrt(x_sq // d))
-        lower_bound = max(0, y_sq - 2)
-        for y in range(lower_bound, y_sq + 2 + 1):
-            if x_sq - d * (y ** 2) == 1:
-                return y
-            elif y == y_sq + 2:
-                return False
+    # Tuple to track the largest x of the minimal solution and its associated D
+    largest = (0, 0)
+    for d in range(2, 1000 + 1):
+        # Calculate the (recuring) continuing fraction expansion for sqrt(d)
+        base, recur = continuing_fraction(d)
+        cycle = len(recur)
+
+        # 'approx' will be an attempted solution of the Pell equation using the latest convergent, 'counter' will track the continued fraction entries
+        approx, counter = 0, 0
+        p = [0, 1, base]
+        q = [1, 0, 1]
+        
+        while approx != 1:
+            # Use the recurance formula to find the next rational approximation of sqrt(d)
+            a = recur[counter]
+            m = a * p[-1] + p[-2]
+            n = a * q[-1] + q[-2]
             
-    squares = set([x ** 2 for x in range(35) if x ** 2 <= 1000])
-    largest = 0
-    for d in range(61, 61 + 1):
-        if d not in squares:
-            x = int(math.sqrt(d))
-            while 1 > 0:
-                result = check_x(x, d)
-                if result != False:
-                    if x > largest:
-                        largest = x
-                    break
-                else:
-                    x += 1
-                    print(x)
-    return largest
+            p[-2] = p[-1]
+            q[-2] = q[-1]
+            p[-1] = m
+            q[-1] = n
             
+            # Check if the rational approximation satisfies Pell's equation
+            approx = (m ** 2) - d * (n ** 2)
+            # Increment the counter, modulo 'cycle'
+            counter += 1
+            counter = counter % cycle
+        
+        # Once the minimal solution is found, check whether it has the largest x value seen so far, and record it if so
+        if m > largest[1]:
+            largest = (d, m)
+            
+    # Returnt D associated with the largest x value
+    return largest[0]
     
-# print(problem_sixtysix())
+# answer, time = problem_sixtysix()
 # print(f"The answer to problem sixty-six is: {answer}    (Run in {time:.5f} s)") 
 
 
@@ -264,20 +272,36 @@ def problem_sixtyseven():
 # answer, time = problem_sixtyseven()
 # print(f"The answer to problem sixty-seven is: {answer}    (Run in {time:.5f} s)") 
 
+
+@timer
+def problem_sixtynine(n):
+    """
+    Return the integer m less than n for which m / phi(m) is maximised, where phi(m) is Euler's totient function
+    """
+    # Generate primes up to 100, this is satisfactory for n < 10 ** 36
+    primes = sieve_primes(100)
+    
+    # Using the product formula, m / phi(m) is simply the reciprocal of product of (p-1) / p, over all distinct prime factors p of m. This is maximised when the product is minimised. The product decreases the more number, of factors multiplied together, and when the primes p are smaller. The desired number that maximises m / phi(m) will therefore be the result of multiplying as many primes together in ascending order as possible without exceeding n.
+    
+    product = 1
+    for prime in primes:
+        if product * prime > n:
+            break
+        else:
+            product *= prime
+
+    return product
+         
+# answer, time = problem_sixtynine(10 ** 6)
+# print(f"The answer to problem sixty-nine is: {answer}    (Run in {time:.5f} s)") 
+
+
 @timer
 def problem_seventy():
     """
     Return the number n between 1 and 10 ** 7 which minimises n / phi(n), where phi is the euler totient function, subject to the constraint that phi(n) must consist of precisely the same digits as n
     """
-    # Use a sieve method to generate phi(n) up to 10 ** 7
-    # First generate a list of all integers
-    tot = [i for i in range(10 ** 7)]
-    for p in range(2, 10 ** 7):
-        # If tot[index] == index the number must be prime, since composite numbers will be reduced
-        if tot[p] == p:
-            # For each multiple of each prime, multiply that entry in tot by (1 - 1 / prime)
-            for n in range(p, 10 ** 7, p):
-                tot[n] -= (tot[n] // p)
+    tot = totient(10 ** 7)
     
     # Now filter out those n for which phi(n) and n do not use the same digits
     successful_numbers = []
@@ -296,3 +320,19 @@ def problem_seventy():
     
 # answer, time = problem_seventy()
 # print(f"The answer to problem seventy is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_seventyone():
+    """
+    Return the numerator of the fraction immediately before 3/7, if listing all fractions of the form a / b where a < b <= 10 ** 6, in ascending order
+    """
+    # We want to find the a/b that minimises 3/7 - a/b, with the restrictions that a < b < 10 ** 6 and 3/7 - a/b > 0. This is equivalent to minimising (3b - 7a) / 7b. This is minimised by finding a solution to 3b - 7a = 1 that maximises b < 10 ** 6. An obvious solution is b = -2 and 7 = -1: other solutions can be found by translating: b = -2 + 7*n; a = -1 + 3*n for integer values of n.
+    
+    n = (10 ** 6 + 2) // 7
+            
+    return  -1 + 3*n
+
+    
+# answer, time = problem_seventyone()
+# print(f"The answer to problem seventy-one is: {answer}    (Run in {time:.5f} s)")
