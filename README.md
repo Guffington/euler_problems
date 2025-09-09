@@ -1,11 +1,11 @@
 # Solutions to the Euler Problems
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
-![Project Euler](https://img.shields.io/badge/Project%20Euler-60%20problems-orange)
+![Project Euler](https://img.shields.io/badge/Project%20Euler-70%20problems-orange)
 ![Last Commit](https://img.shields.io/github/last-commit/Guffington/euler_problems)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green)
 
-Welcome to my collection of solutions to the first 60 Project Euler problems. This repository is part of my programming portfolio and showcases my approach to solving algorithmic and mathematical challenges in Python.
+Welcome to my collection of solutions to the first 70 Project Euler problems. This repository is part of my programming portfolio and showcases my approach to solving algorithmic and mathematical challenges in Python.
 
 ## About Project Euler
 
@@ -29,21 +29,23 @@ The repository is organized as follows:
 
 ```text
 euler_problems/
-├── problems_1_to_10.py           # Solutions to problems 1–10
-├── problems_11_to_20.py          # Solutions to problems 11–20
-├── problems_21_to_30.py          # Solutions to problems 21–30
-├── problems_31_to_40.py          # Solutions to problems 31–40
-├── problems_41_to_50.py          # Solutions to problems 41–50
-├── problems_51_to_60.py          # Solutions to problems 51–60
-├── utils.py                      # Shared useful functions
-├── problem_eight_number.txt      # Input data for Problem 8
-├── problem_eleven_number.txt     # Input data for Problem 11
-├── problem_thirteen_numbers.txt  # Input data for Problem 13
-├── problem_eighteen_triangle.txt # Input data for Problem 18
-├── problem_twentytwo_names.txt   # Input data for Problem 22
-├── problem_fortytwo_words.txt    # Input data for Problem 42
-├── problem_fiftyfour_poker.txt   # Input data for Problem 54
-└── problem_fiftynine_code.txt    # Input data for Problem 59
+├── problems_1_to_10.py              # Solutions to problems 1–10
+├── problems_11_to_20.py             # Solutions to problems 11–20
+├── problems_21_to_30.py             # Solutions to problems 21–30
+├── problems_31_to_40.py             # Solutions to problems 31–40
+├── problems_41_to_50.py             # Solutions to problems 41–50
+├── problems_51_to_60.py             # Solutions to problems 51–60
+├── problems_61_to_70.py             # Solutions to problems 61–70
+├── utils.py                         # Shared useful functions
+├── problem_eight_number.txt         # Input data for Problem 8
+├── problem_eleven_number.txt        # Input data for Problem 11
+├── problem_thirteen_numbers.txt     # Input data for Problem 13
+├── problem_eighteen_triangle.txt    # Input data for Problem 18
+├── problem_twentytwo_names.txt      # Input data for Problem 22
+├── problem_fortytwo_words.txt       # Input data for Problem 42
+├── problem_fiftyfour_poker.txt      # Input data for Problem 54
+├── problem_fiftynine_code.txt       # Input data for Problem 59
+└── problem_sixtyseven_triangle.txt  # Input data for Problem 67
 ```
 
 ## Getting Started
@@ -100,6 +102,6 @@ Many problems may appear solved quite simply by using functions from utils.py. H
 I intend to continue solving additional Project Euler problems and expand this repository.  
 Future updates will include:
 
-- Solutions to problems 61 and beyond.
+- Solutions to problems 71 and beyond.
 
 - Optimizations and refactorings of existing solutions.

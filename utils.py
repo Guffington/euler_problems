@@ -243,17 +243,17 @@ def miller_rabin(n: int, bases: list = [2, 3, 5, 7, 11, 13]):
 
 def totient(n):
     """
-    Use a sieve method to generate a list of phi(m) for m from 2 up to n.
+    Use a sieve method to generate a list of phi(m) for m from 2 up to and including n.
     Tot[0] = 0 and tot[1] = 1 by convention, so that phi(m) = tot[m].
     """
     # First generate a list of all integers
-    tot = [i for i in range(n)]
-    for p in range(2, n):
+    tot = [i for i in range(n + 1)]
+    for p in range(2, n + 1):
         # If tot[index] == index the number must be prime, since composite numbers will be reduced
         if tot[p] == p:
             # For each multiple of each prime, multiply that entry in tot by (1 - 1 / prime)
-            for n in range(p, n, p):
-                tot[n] -= (tot[n] // p)
+            for m in range(p, n + 1, p):
+                tot[m] -= (tot[m] // p)
     
     return tot
 

@@ -1,5 +1,5 @@
 print("\rLoading packages...", end = "")
-from utils import timer, totient, sieve_primes, continuing_fraction
+from utils import timer, totient, sieve_primes, continuing_fraction, permutations
 import numpy as np
 from fractions import Fraction
 import math
@@ -61,8 +61,8 @@ def problem_sixtyone():
             return sum(chain)
     
 
-# answer, time = problem_sixtyone()
-# print(f"The answer to problem sixty-one is: {answer}    (Run in {time:.5f} s)")  
+answer, time = problem_sixtyone()
+print(f"The answer to problem sixty-one is: {answer}    (Run in {time:.5f} s)")  
 
 
 @timer
@@ -88,8 +88,8 @@ def problem_sixtytwo(n):
     # For the digits which have n associated cubes, return the cube of the smallest value
     return max(cube_digits.values(), key = len)[0] ** 3
 
-# answer, time = problem_sixtytwo(5)
-# print(f"The answer to problem sixty-two is: {answer}    (Run in {time:.5f} s)") 
+answer, time = problem_sixtytwo(5)
+print(f"The answer to problem sixty-two is: {answer}    (Run in {time:.5f} s)") 
 
 
 
@@ -113,8 +113,8 @@ def problem_sixtythree():
     return number_counter
     
 
-# answer, time = problem_sixtythree()
-# print(f"The answer to problem sixty-three is: {answer}    (Run in {time:.5f} s)") 
+answer, time = problem_sixtythree()
+print(f"The answer to problem sixty-three is: {answer}    (Run in {time:.5f} s)") 
 
 
 @timer
@@ -160,8 +160,8 @@ def problem_sixtyfour(m):
         
     return odd_periods
     
-# answer, time = problem_sixtyfour(10 ** 4)
-# print(f"The answer to problem sixty-four is: {answer}    (Run in {time:.5f} s)") 
+answer, time = problem_sixtyfour(10 ** 4)
+print(f"The answer to problem sixty-four is: {answer}    (Run in {time:.5f} s)") 
     
     
 @timer
@@ -189,8 +189,8 @@ def problem_sixtyfive(n):
     return sum(int(d) for d in str(p[n + 1]))
         
         
-# answer, time = problem_sixtyfive(100)
-# print(f"The answer to problem sixty-five is: {answer}    (Run in {time:.5f} s)") 
+answer, time = problem_sixtyfive(100)
+print(f"The answer to problem sixty-five is: {answer}    (Run in {time:.5f} s)") 
 
 
 @timer
@@ -234,8 +234,8 @@ def problem_sixtysix():
     # Returnt D associated with the largest x value
     return largest[0]
     
-# answer, time = problem_sixtysix()
-# print(f"The answer to problem sixty-six is: {answer}    (Run in {time:.5f} s)") 
+answer, time = problem_sixtysix()
+print(f"The answer to problem sixty-six is: {answer}    (Run in {time:.5f} s)") 
 
 
 @timer
@@ -269,9 +269,71 @@ def problem_sixtyseven():
     return sum(triangle_matrix[0][0])
 
 
-# answer, time = problem_sixtyseven()
-# print(f"The answer to problem sixty-seven is: {answer}    (Run in {time:.5f} s)") 
+answer, time = problem_sixtyseven()
+print(f"The answer to problem sixty-seven is: {answer}    (Run in {time:.5f} s)") 
 
+
+@timer
+def problem_sixtyeight():
+    """
+    Return the maximal 16-digit string creating a magic 5-gon using the numbers 1 to 10
+    """
+    # Since we require a 16-digit string, then 10 must be on the outside. We search for possible arrangements of 1-5 on the inner rungs so that 6 will be the smallest digit on the outside
+    
+    # Generate all permutations of '2345'; we fix the number 1 at the front to avoid any repeats with rotations
+    perms = permutations("2345")
+    arrangements = ["1" + perm for perm in perms]
+    # The numbers on the outside are listed in reverse order
+    outer_list = [10, 9, 8, 7, 6]
+    
+    possible_arrangements = set()
+    
+    # Find the set of possible arrangements
+    for arrangement in arrangements:
+        arrangement_list = [int(i) for i in arrangement]
+        sums = []
+        for index, digit in enumerate(arrangement_list):
+            sums.append(digit + arrangement_list[(index + 1) % 5])
+        # The set of sums of successive terms needs to yield 5 distinct numbers for it to be a magic 5-gon
+        if len(set(sums)) == 5:
+            combinations = [sorted(sums)[i] + outer_list[i] for i in range(5)]
+            # The sums of each 3-node strand must all be equal for it to be a magic n-gon
+            if len(set(combinations)) == 1:
+                # Retain only those arrangements that meet the above conditions
+                possible_arrangements.add(arrangement)
+    
+    digit_strings = []
+    # For each possible arrangement, construct the 5-gon and then compute the digit sum
+    for inner in sorted(possible_arrangements):
+        digits = [int(i) for i in inner]
+        sums = []
+        # Compute what each node arm must sum to, save it in 'total'
+        for i, digit in enumerate(digits):
+            sums.append(digit + digits[(i + 1) % 5])
+        total = min(sums) + 10
+        nodes = []
+        # Construct the 5-gon by placing the appropriate outer digit to each pair of inner digits
+        for i, digit in enumerate(digits):
+            nodes.append((total - digit - digits[(i + 1) % 5], digits[(i + 1) % 5], digit))
+        
+        # Construct the digit sum
+        digit_string = ""
+        for i in range(5):
+            # Find where the index of the smallest outer node (which will be 6)
+            smallest_index = nodes.index(min(nodes))
+            # Work backwards throught he list: this corresponds to moving clockwise around the 5-gon
+            current_index = (smallest_index - i) % 5 
+            for digit in nodes[current_index]:
+                digit_string += str(digit)
+            
+        digit_strings.append(digit_string)
+    
+    # Return the largest digit string
+    return max(digit_strings)
+
+
+answer, time = problem_sixtyeight()
+print(f"The answer to problem sixty-eight is: {answer}    (Run in {time:.5f} s)") 
 
 @timer
 def problem_sixtynine(n):
@@ -292,8 +354,8 @@ def problem_sixtynine(n):
 
     return product
          
-# answer, time = problem_sixtynine(10 ** 6)
-# print(f"The answer to problem sixty-nine is: {answer}    (Run in {time:.5f} s)") 
+answer, time = problem_sixtynine(10 ** 6)
+print(f"The answer to problem sixty-nine is: {answer}    (Run in {time:.5f} s)") 
 
 
 @timer
@@ -318,21 +380,5 @@ def problem_seventy():
     return min(successful_numbers)[1]
     
     
-# answer, time = problem_seventy()
-# print(f"The answer to problem seventy is: {answer}    (Run in {time:.5f} s)")
-
-
-@timer
-def problem_seventyone():
-    """
-    Return the numerator of the fraction immediately before 3/7, if listing all fractions of the form a / b where a < b <= 10 ** 6, in ascending order
-    """
-    # We want to find the a/b that minimises 3/7 - a/b, with the restrictions that a < b < 10 ** 6 and 3/7 - a/b > 0. This is equivalent to minimising (3b - 7a) / 7b. This is minimised by finding a solution to 3b - 7a = 1 that maximises b < 10 ** 6. An obvious solution is b = -2 and 7 = -1: other solutions can be found by translating: b = -2 + 7*n; a = -1 + 3*n for integer values of n.
-    
-    n = (10 ** 6 + 2) // 7
-            
-    return  -1 + 3*n
-
-    
-# answer, time = problem_seventyone()
-# print(f"The answer to problem seventy-one is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_seventy()
+print(f"The answer to problem seventy is: {answer}    (Run in {time:.5f} s)")
