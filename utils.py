@@ -257,21 +257,42 @@ def totient(n):
     
     return tot
 
-def euclid(a, b):
+def euclid(a, b, coefficients = False):
     """
-    Returns the greatest common divisor of a and b using Euclid's algorithm
+    Returns the greatest common divisor of a and b using Euclid's algorithm.
+    If coefficients is set to 'True', then it also returns coefficients x and y in Bezout's identity ax + by = gcd(a, b) in the form: gcd, [(a, x), (b, y)]
     """
     m = max(a,b)
     n = min(a,b)
+    
+    eqns = []
     
     while 1 > 0:
         q = m // n
         r = m - q * n
         if r == 0:
-            return n
+            if coefficients:
+                if eqns == []:
+                    return n, [(m, 0), (n, 1)]
+                break
+            else:
+                return n
+        # Store the individual equations which arise in Euclid's algorithm
+        eqns.append((m, n, q, r))
         m = n
         n = r
+        
+    # Initialise tuples to represent the coefficients
+    variables = [(0,0), (0, 1)]
 
+    # Work backwards, repeatedly substituting in equaton Euclid's equation to find the coefficients
+    for eqn in reversed(eqns):
+        factor = variables[1][1]
+        summand = variables[0][1]
+        new_variables = [(eqn[0], factor), (eqn[1], -eqn[2] * factor + summand)]
+        variables = new_variables
+    
+    return n, variables
 
 def continuing_fraction(n):
     """
