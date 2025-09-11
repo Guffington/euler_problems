@@ -130,6 +130,41 @@ def problem_seventyfour(n):
 
 
 @timer
+def problem_seventyfive(max):
+    """
+    Return the number of lengths less than or equal to 'max' which have exactly 1 decomposition into pythagorean triples
+    """
+    # List to contain the tally for each possible length
+    perimeters = [0] * (max + 1)
+
+    # Calculate a bound on the value on 'm', the first number to generate primitive triples
+    bound = int(math.sqrt(max))
+    for m in range(2, bound):
+        # Calculate a bound on 'n'
+        n_bound = int(math.sqrt(max - m ** 2))
+        # Enforce the bound and the restriction m > n
+        for n in range(1, min(m, n_bound)):
+            # Primititve triplets are generated from m > n where m and n are coprime and not both odd
+            if m % 2 == 0 or n % 2 == 0:
+                if euclid(m, n) == 1:
+                    a, b, c = m ** 2 - n ** 2, 2 * m * n, m ** 2 + n ** 2
+                    l = a + b + c
+                    # Non-primitive triplets (and perimeters) can be found by scaling
+                    if l <= max:
+                        k = l
+                        while k <= max:
+                            perimeters[k] += 1
+                            k += l
+            
+    # Count the number of entries in the list which are 1
+    return sum(1 for count in perimeters if count == 1)
+        
+# answer, time = problem_seventyfive(1500000)
+# print(f"The answer to problem seventy-five is: {answer}    (Run in {time:.5f} s)")
+
+
+
+@timer
 def problem_seventysix(n):
     """
     Return the number of decompositions of n into a sum of at least two terms
