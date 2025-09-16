@@ -265,6 +265,51 @@ def problem_seventyeight():
 
 
 @timer
+def problem_seventynine():
+    """
+    Return the shortest secret passcode satisfying all the attempts in problem_seventynine_keylog.txt
+    """
+    
+    with open("problem_seventynine_keylog.txt", 'r') as k:
+        # Password attempts are sorted and duplicates are eliminated
+        attempts = sorted(set(k.read().split("\n")))
+
+    # Initialise the list containing the full password with the first clue
+    password = list(attempts[0])
+    
+    # Before implementing the latest clue, the code goes back over all other clues to make sure they're still satisfied
+    for end in range(1, len(attempts) + 1):
+        for attempt in attempts[: end]:
+            # For each 'digit' in the clue check if the next digit exists in the password to the right of 'digit'
+            for i, digit in enumerate(attempt[:-1]):
+                next_digit = attempt[i + 1]
+                if digit in password:
+                    ind = password.index(digit)
+                    if next_digit in password[ind:]:
+                        # If 'next_digit' already is to the right of 'digit', no need to do anything
+                        continue
+                    elif next_digit in password[: ind]:
+                        # If 'next_digit' is actually before digit in the password, move it to the right of 'digit'
+                        password.remove(next_digit)
+                        ind = password.index(digit)
+                        password.insert(ind + 1, next_digit)
+                    else:
+                        # If next_digit doesn't exist at all in the the password, then insert it right after 'digit'
+                        password.insert(ind + 1, next_digit)
+                # If 'digit' doesn't even exist in password, but 'next_digit' does, then insert 'digit' before 'next_digit'
+                elif next_digit in password:
+                    ind = password.index(next_digit)
+                    password.insert(ind, digit)
+                
+    # Join the list together into a single string
+    return "".join(password)
+
+
+# answer, time = problem_seventynine()
+# print(f"The answer to problem seventy-nine is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
 def problem_eighty(m):
     """
     Return the total of the first 100 digits of the first m natural numbers
