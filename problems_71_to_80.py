@@ -1,5 +1,5 @@
 print("\rLoading packages...", end = "")
-from utils import timer, euclid, totient
+from utils import timer, euclid, totient, sieve_primes
 from fractions import Fraction
 import math
 print("\rAll packages loaded")
@@ -181,10 +181,120 @@ def problem_seventysix(n):
             next_list.append(total)
         # Replace the old list with the newly constructed list
         current_list = next_list
-            
-    
+
     return current_list[-1]
 
     
 # answer, time = problem_seventysix(100)
 # print(f"The answer to problem seventy-six is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_seventyseven(number_of_ways):
+    """
+    Return the least positive integer that can be written as the sum of primes in at least 'number_of_ways' different ways
+    """
+    
+    # Use a sieve to generate a list of many primes
+    primes = sieve_primes(10 ** 3)
+    # Create a dictionary of the previous prime to each prime, for fast lookup
+    previous_prime = {primes[i]: primes[i - 1] for i in range(1, len(primes))}
+    # Turn the list of primes into a set for fast lookup
+    primes = set(primes)
+    # Dictionary to contain the number of ways of partitioning each integer into primes. Each key-value pair is of the form prime_key: value_set, where value_set[i] is the number of partitions of i using all primes up to and including prime_key
+    partitions = {2: [1, 0, 1, 0, 1],
+                  3: [1, 0, 1, 1, 1],}
+    
+    # Begin with 5
+    n = 5
+    while True:
+        # Since each list is built from the previous, we append the nth entry onto each list
+        for number, plist in partitions.items():
+            # Using only the prime 2, n can be built from 2's if and only if n is even
+            if number == 2:
+                if n % 2 == 0:
+                    plist.append(1)
+                else:
+                    plist.append(0)
+            else:
+                # Build the nth entry using a sum of entries from the previous entry
+                p = previous_prime[number]
+                s = sum(partitions[p][n - k] for k in range(0, n + 1, number))
+                # If we encounter a partition greater than 'number_of_ways', end here
+                if s > number_of_ways:
+                    return n
+                plist.append(s)
+        if n in primes:
+            # If n is prime, create a whole new dictionary entry and build that up
+            partitions[n] = [1, 0, 1, 1, 1]
+            for m in range(5, n + 1):
+                p = previous_prime[n]
+                s = sum(partitions[p][m - k] for k in range(0, m + 1, n))
+                if s > number_of_ways:
+                    return m
+                partitions[n].append(s)
+        n += 1
+        
+        
+# answer, time = problem_seventyseven(5000)
+# print(f"The answer to problem seventy-seven is: {answer}    (Run in {time:.5f} s)")
+
+
+
+@timer
+def problem_seventyeight():
+    """
+
+    """
+    bound = 10 ** 5
+    sum_of_divisors = [1] * (bound + 1)
+    for divisor in range(2, bound + 1):
+        for muliple in range(divisor, bound, divisor):
+            sum_of_divisors[muliple] += divisor
+        
+    p = [1, 1]
+    for n in range(2, 100000 + 1):
+        next = sum(sum_of_divisors[n - k] * p[k] for k in range(n)) // n
+        if next % 1000000 == 0:
+            return n
+        p.append(next)
+    
+    
+# answer, time = problem_seventyeight()
+# print(f"The answer to problem seventy-eight is: {answer}    (Run in {time:.5f} s)")
+
+
+@timer
+def problem_eighty(m):
+    """
+    Return the total of the first 100 digits of the first m natural numbers
+    """
+    # Create a set of squares to ignore
+    squares = set([n ** 2 for n in range(2, int(math.sqrt(m)) + 1)])
+    # Count the sum of the first 100 digits
+    total = 0
+    
+    for n in range(2, m + 1):
+        if n not in squares:
+            # First digit is the integer part of the square root
+            digits = [int(math.sqrt(n))]
+            while len(digits) < 100:
+                # Search through digits one to 9 to find the next digit which best approximates the root
+                for i in range(1, 9 + 1):
+                    l = len(digits)
+                    # Add i to the last digit, scaling by powers of 10 enough to make the number an integer
+                    s = sum(digits[i] * (10 ** (l - i)) for i in range(0, l)) + i
+                    # Check if we have exceeded the square root of 2 (suitably scaled). If, so the previous number was correct digit approximation
+                    if s ** 2 > n * (10 ** (2 * l)):
+                        digits.append(i - 1)
+                        break
+                    # If we get to 9 and haven't exceeded the root, then 9 is the appropriate digit
+                    if i == 9:
+                        digits.append(9)
+            # Sum the first 100 digits and add it to the total
+            total += sum(digits)
+    
+    return total
+    
+# answer, time = problem_eighty(100)
+# print(f"The answer to problem eighty is: {answer}    (Run in {time:.5f} s)")
