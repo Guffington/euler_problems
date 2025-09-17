@@ -16,8 +16,8 @@ def problem_seventyone():
     return  -1 + 3*n
 
     
-# answer, time = problem_seventyone()
-# print(f"The answer to problem seventy-one is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_seventyone()
+print(f"The answer to problem seventy-one is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -32,8 +32,8 @@ def problem_seventytwo(n):
     return sum(tot[2:])
     
     
-# answer, time = problem_seventytwo(12 * (10 ** 3))
-# print(f"The answer to problem seventy-two is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_seventytwo(10 ** 6)
+print(f"The answer to problem seventy-two is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -57,8 +57,8 @@ def problem_seventythree(bound):
     
     return counter
     
-# answer, time = problem_seventythree(12000)
-# print(f"The answer to problem seventy-three is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_seventythree(12000)
+print(f"The answer to problem seventy-three is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -125,8 +125,8 @@ def problem_seventyfour(n):
     
     return sixty_chains
     
-# answer, time = problem_seventyfour(10 ** 6)
-# print(f"The answer to problem seventy-four is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_seventyfour(10 ** 6)
+print(f"The answer to problem seventy-four is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -159,8 +159,8 @@ def problem_seventyfive(max):
     # Count the number of entries in the list which are 1
     return sum(1 for count in perimeters if count == 1)
         
-# answer, time = problem_seventyfive(1500000)
-# print(f"The answer to problem seventy-five is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_seventyfive(1500000)
+print(f"The answer to problem seventy-five is: {answer}    (Run in {time:.5f} s)")
 
 
 
@@ -185,8 +185,8 @@ def problem_seventysix(n):
     return current_list[-1]
 
     
-# answer, time = problem_seventysix(100)
-# print(f"The answer to problem seventy-six is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_seventysix(100)
+print(f"The answer to problem seventy-six is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -236,32 +236,46 @@ def problem_seventyseven(number_of_ways):
         n += 1
         
         
-# answer, time = problem_seventyseven(5000)
-# print(f"The answer to problem seventy-seven is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_seventyseven(5000)
+print(f"The answer to problem seventy-seven is: {answer}    (Run in {time:.5f} s)")
 
 
 
 @timer
 def problem_seventyeight():
     """
-
+    Return the first number n such that the number of partitions of n is divisible by 1 million.
     """
-    bound = 10 ** 5
-    sum_of_divisors = [1] * (bound + 1)
-    for divisor in range(2, bound + 1):
-        for muliple in range(divisor, bound, divisor):
-            sum_of_divisors[muliple] += divisor
-        
-    p = [1, 1]
-    for n in range(2, 100000 + 1):
-        next = sum(sum_of_divisors[n - k] * p[k] for k in range(n)) // n
-        if next % 1000000 == 0:
+    # Compute a large number of pentagonal numbers
+    pentagonal = [(k*(3 * k - 1)) // 2 for k in range(0, (10 ** 3) + 1)]
+    # Compute a large number of pentagonal numbers with a negative index
+    pentagonal_m = [(k*(3 * k + 1)) // 2 for k in range(0, (10 ** 3) + 1)]
+    
+    # Compute a large number of powers of -1, for easy access
+    signs = [(-1) ** (k + 1) for k in range(0, 10 ** 6)]
+
+    # Initialise partitions with partitions[0] = 1
+    partitions = [1]
+    
+    # Compute the number of partitions for each 'n' using the pentagonal number recurrance relation
+    for n in range(1, 10 ** 6 + 1):
+        total = 0
+        ind = 1
+        # Sum over all pentagonal numbers which are less than or equal to 'n'
+        while pentagonal[ind] <= n:
+            total += signs[ind] * partitions[n - pentagonal[ind]]
+            if pentagonal_m[ind] <= n:
+                total += signs[ind] * partitions[n - pentagonal_m[ind]]
+            ind += 1
+        # Reduce modulo 10 ** 6 at each stage to keep numbers below 10 ** 6
+        if total % (10 ** 6) == 0:
             return n
-        p.append(next)
+        partitions.append(total % (10 ** 6))
+        
+    return "None Found"
     
-    
-# answer, time = problem_seventyeight()
-# print(f"The answer to problem seventy-eight is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_seventyeight()
+print(f"The answer to problem seventy-eight is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -305,8 +319,8 @@ def problem_seventynine():
     return "".join(password)
 
 
-# answer, time = problem_seventynine()
-# print(f"The answer to problem seventy-nine is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_seventynine()
+print(f"The answer to problem seventy-nine is: {answer}    (Run in {time:.5f} s)")
 
 
 @timer
@@ -341,5 +355,5 @@ def problem_eighty(m):
     
     return total
     
-# answer, time = problem_eighty(100)
-# print(f"The answer to problem eighty is: {answer}    (Run in {time:.5f} s)")
+answer, time = problem_eighty(100)
+print(f"The answer to problem eighty is: {answer}    (Run in {time:.5f} s)")

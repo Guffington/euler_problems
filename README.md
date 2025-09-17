@@ -1,11 +1,11 @@
 # Solutions to the Euler Problems
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
-![Project Euler](https://img.shields.io/badge/Project%20Euler-70%20problems-orange)
+![Project Euler](https://img.shields.io/badge/Project%20Euler-80%20problems-orange)
 ![Last Commit](https://img.shields.io/github/last-commit/Guffington/euler_problems)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green)
 
-Welcome to my collection of solutions to the first 70 Project Euler problems. This repository is part of my programming portfolio and showcases my approach to solving algorithmic and mathematical challenges in Python.
+Welcome to my collection of solutions to the first 80 Project Euler problems. This repository is part of my programming portfolio and showcases my approach to solving algorithmic and mathematical challenges in Python.
 
 ## About Project Euler
 
@@ -36,6 +36,7 @@ euler_problems/
 ├── problems_41_to_50.py             # Solutions to problems 41–50
 ├── problems_51_to_60.py             # Solutions to problems 51–60
 ├── problems_61_to_70.py             # Solutions to problems 61–70
+├── problems_71_to_80.py             # Solutions to problems 71–80
 ├── utils.py                         # Shared useful functions
 ├── problem_eight_number.txt         # Input data for Problem 8
 ├── problem_eleven_number.txt        # Input data for Problem 11
@@ -45,7 +46,8 @@ euler_problems/
 ├── problem_fortytwo_words.txt       # Input data for Problem 42
 ├── problem_fiftyfour_poker.txt      # Input data for Problem 54
 ├── problem_fiftynine_code.txt       # Input data for Problem 59
-└── problem_sixtyseven_triangle.txt  # Input data for Problem 67
+├── problem_sixtyseven_triangle.txt  # Input data for Problem 67
+└── problem_seventynine_keylog.txt   # Input data for Problem 79
 ```
 
 ## Getting Started
@@ -102,6 +104,6 @@ Many problems may appear solved quite simply by using functions from utils.py. H
 I intend to continue solving additional Project Euler problems and expand this repository.  
 Future updates will include:
 
-- Solutions to problems 71 and beyond.
+- Solutions to problems 81 and beyond.
 
 - Optimizations and refactorings of existing solutions.
